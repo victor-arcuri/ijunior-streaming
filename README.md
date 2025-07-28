@@ -12,7 +12,7 @@ Suas orientações podem ser encontradas no Notion com mais detalhes [nesse link
 
 #### Objetivos 
 - [X] Criar e configurar o repositório do projeto
-- [ ] Inicializar a estrutura do prisma 
+- [X] Inicializar a estrutura do prisma 
 - [ ] Criar o início da arquitetura MVC (services)
 - [ ] Modelar o banco de dado
 - [ ] Criar as schemas referentes às entidades do banco
