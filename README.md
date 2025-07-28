@@ -53,8 +53,8 @@ Ao final, faça os pushes e crie o push request para a branch *develop* no GitHu
 ```
 git push
 ```
-[!TIP]
-Lembre de utilizar *git pull* constantemente na branch *develop* para estar sempre de acordo com a equipe!
+> [!TIP]
+> Lembre de utilizar *git pull* constantemente na branch *develop* para estar sempre de acordo com a equipe!
 
 
 
