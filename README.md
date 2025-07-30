@@ -49,7 +49,7 @@ git commit -m "docs: para atualizar a documentação"
 git commit -m "fix: para correção de erros"
 ```
 
-Ao final, faça os pushes e crie o push request para a branch *develop* no GitHub
+Ao final, faça os pushes e crie o pull request para a branch *develop* no GitHub
 ```
 git push
 ```
