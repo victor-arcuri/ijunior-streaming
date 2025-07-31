@@ -13,14 +13,50 @@ Suas orientações podem ser encontradas no Notion com mais detalhes [nesse link
 #### Objetivos 
 - [X] Criar e configurar o repositório do projeto
 - [X] Inicializar a estrutura do prisma 
-- [ ] Criar o início da arquitetura MVC (services)
-- [ ] Modelar o banco de dado
+- [X] Modelar o banco de dados 
 - [ ] Criar as schemas referentes às entidades do banco
+- [ ] Criar o início da arquitetura MVC (services) 
 - [ ] Criar as services de CRUD referentes às entidades
 - [ ] Atualizar a documentação do repositório
 
 ## Modelagem do Banco 📝
-_Adicionar modelagem do banco aqui (imagens, relações, entidades, etc...)_
+O banco de dados retrata três entidades principais e suas relações:
+
+![Diagrama representando as relações das tabelas do banco de dados](/public/imgs/db_schema.png)
+
+### Usuário
+O usuário é aquele que irá interagir diretamente com a plataforma e utilizar seus recursos.
+
+Como elementos principais, possui:
+
+- **id**: representa seu identificador único na tabela
+- **email**: email único registrado por cada usuário
+- **nome**: nome do usuário
+- **privilegio**: nível de acesso aos recursos da plataforma, podendo ser (PADRAO, ASSINANTE ou DEV)
+- **senha**: senha para acessar a conta do usuário
+- **foto**: url para a foto de perfil do usuário
+
+### Artista
+O artista é aquele que lança as músicas. Seu perfil é representativo, e não é acessado diretamente por um usuário, apenas servindo para agrupar suas músicas.
+
+Como elementos principais, possui:
+
+- **id**: representa seu identificador único na tabela
+- **nome**: nome artístico
+- **streams**: número de vezes que escutaram suas músicas
+- **foto**: url para foto de perfil do artista
+
+### Música
+A música é o centro do serviço, sendo lançada sob autoria dos artistas e podendo ser salva pelos usuários e também escutada por eles
+
+Como elementos principais, possui:
+
+- **id**: representa seu identificador único na tabela
+- **nome**: nome da música
+- **genero**: o gênero musical da publicação
+- **album**: sob qual album, se não for um single, a música foi lançada
+
+
 
 ## Como Contribuir 🚀
 Inicialmente, solicite permisões de colaboração ao administrador do repositório.
