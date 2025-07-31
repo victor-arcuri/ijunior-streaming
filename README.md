@@ -24,7 +24,9 @@ O banco de dados retrata três entidades principais e suas relações:
 
 ![Diagrama representando as relações das tabelas do banco de dados](/public/imgs/db_schema.png)
 
-### Usuário
+### Entidades
+
+#### Usuário
 O usuário é aquele que irá interagir diretamente com a plataforma e utilizar seus recursos.
 
 Como elementos principais, possui:
@@ -36,7 +38,7 @@ Como elementos principais, possui:
 - **senha**: senha para acessar a conta do usuário
 - **foto**: url para a foto de perfil do usuário
 
-### Artista
+#### Artista
 O artista é aquele que lança as músicas. Seu perfil é representativo, e não é acessado diretamente por um usuário, apenas servindo para agrupar suas músicas.
 
 Como elementos principais, possui:
@@ -46,7 +48,7 @@ Como elementos principais, possui:
 - **streams**: número de vezes que escutaram suas músicas
 - **foto**: url para foto de perfil do artista
 
-### Música
+#### Música
 A música é o centro do serviço, sendo lançada sob autoria dos artistas e podendo ser salva pelos usuários e também escutada por eles
 
 Como elementos principais, possui:
@@ -56,6 +58,16 @@ Como elementos principais, possui:
 - **genero**: o gênero musical da publicação
 - **album**: sob qual album, se não for um single, a música foi lançada
 
+### Relações
+
+#### Autoria
+A tabela de autoria representa a relação entre uma música e um (ou mais) artistas, sendo caracterizada por quem publicou uma música. (1->N)
+
+#### Logs
+Os logs representam quando um usuário ouviu uma música, guardando o momento no tempo exato em que isso ocorreu. É uma relação de uma música para um usuário (1->1)
+
+#### Músicas Salvas
+Representa as músicas favoritadas por um usuário, retendo a informação de quando foi salva. É uma relação de uma música para um usuário (1->1)
 
 
 ## Como Contribuir 🚀
