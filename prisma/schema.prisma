@@ -10,3 +10,65 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
+
+enum Privilegios {
+  PADRAO
+  ASSINANTE
+  DEV
+}
+
+model Usuario {
+  id          String        @id @default(uuid())
+  email       String        @unique
+  nome        String
+  privilegio  Privilegios   @default(PADRAO)
+  senha       String
+  foto        String?
+  logMusica  LogMusica[]
+  musicaSalva MusicaSalva[]
+}
+
+model Artista {
+  id      String    @id @default(uuid())
+  nome    String
+  streams Int?
+  foto    String?
+  autoria Autoria[]
+}
+
+model Musica {
+  id          String        @id @default(uuid())
+  nome        String
+  genero      String?
+  album       String?
+  autoria     Autoria[]
+  logMusica  LogMusica[]
+  musicaSalva MusicaSalva[]
+}
+
+model Autoria {
+  artista   Artista @relation(fields: [artistaId], references: [id])
+  artistaId String
+  musica    Musica  @relation(fields: [musicaId], references: [id])
+  musicaId  String
+
+  @@id([artistaId, musicaId])
+}
+
+model LogMusica {
+  id        String   @id @default(uuid())
+  time      DateTime @default(now())
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId String
+  musica    Musica   @relation(fields: [musicaId], references: [id])
+  musicaId  String
+}
+
+model MusicaSalva {
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId String
+  musica    Musica  @relation(fields: [musicaId], references: [id])
+  musicaId  String
+
+  @@id([usuarioId, musicaId])
+}
