@@ -14,8 +14,8 @@ Suas orientações podem ser encontradas no Notion com mais detalhes [nesse link
 - [X] Criar e configurar o repositório do projeto
 - [X] Inicializar a estrutura do prisma 
 - [X] Modelar o banco de dados 
-- [ ] Criar as schemas referentes às entidades do banco
-- [ ] Criar o início da arquitetura MVC (services) 
+- [X] Criar as schemas referentes às entidades do banco
+- [X] Criar o início da arquitetura MVC (services) 
 - [ ] Criar as services de CRUD referentes às entidades
 - [ ] Atualizar a documentação do repositório
 
@@ -64,10 +64,10 @@ Como elementos principais, possui:
 A tabela de autoria representa a relação entre uma música e um (ou mais) artistas, sendo caracterizada por quem publicou uma música. (1->N)
 
 #### Logs
-Os logs representam quando um usuário ouviu uma música, guardando o momento no tempo exato em que isso ocorreu. É uma relação de uma música para um usuário (1->1)
+Os logs representam quando um usuário ouviu uma música, guardando o momento no tempo exato em que isso ocorreu. É uma relação de uma música para um usuário (n->n)
 
 #### Músicas Salvas
-Representa as músicas favoritadas por um usuário. É uma relação de uma música para um usuário (1->1)
+Representa as músicas favoritadas por um usuário. É uma relação de uma música para um usuário (n->n)
 
 
 ## Como Contribuir 🚀
