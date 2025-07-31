@@ -67,7 +67,7 @@ A tabela de autoria representa a relação entre uma música e um (ou mais) arti
 Os logs representam quando um usuário ouviu uma música, guardando o momento no tempo exato em que isso ocorreu. É uma relação de uma música para um usuário (1->1)
 
 #### Músicas Salvas
-Representa as músicas favoritadas por um usuário, retendo a informação de quando foi salva. É uma relação de uma música para um usuário (1->1)
+Representa as músicas favoritadas por um usuário. É uma relação de uma música para um usuário (1->1)
 
 
 ## Como Contribuir 🚀
