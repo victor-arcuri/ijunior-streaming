@@ -24,14 +24,14 @@ model Usuario {
   privilegio  Privilegios   @default(PADRAO)
   senha       String
   foto        String?
-  logMusica  LogMusica[]
+  logMusica   LogMusica[]
   musicaSalva MusicaSalva[]
 }
 
 model Artista {
   id      String    @id @default(uuid())
   nome    String
-  streams Int?
+  streams Int       @default(0)
   foto    String?
   autoria Autoria[]
 }
@@ -42,7 +42,7 @@ model Musica {
   genero      String?
   album       String?
   autoria     Autoria[]
-  logMusica  LogMusica[]
+  logMusica   LogMusica[]
   musicaSalva MusicaSalva[]
 }
 
@@ -57,7 +57,7 @@ model Autoria {
 
 model LogMusica {
   id        String   @id @default(uuid())
-  time      DateTime @default(now())
+  tempo     DateTime @default(now())
   usuario   Usuario  @relation(fields: [usuarioId], references: [id])
   usuarioId String
   musica    Musica   @relation(fields: [musicaId], references: [id])
