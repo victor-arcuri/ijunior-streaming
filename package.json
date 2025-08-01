@@ -4,7 +4,8 @@
   "description": "A atividade consiste na modelagem de um banco de dados que simule um serviço de streaming de músicas, e na criação de uma API no modelo MVC para consultar o banco, permitindo realização das operações CRUD sobre suas entidades.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node ./index.ts"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/victor-arcuri/ijunior-semana5#readme",
   "devDependencies": {
+    "@types/bcrypt": "6.0.0",
     "@types/node": "24.1.0",
     "eslint": "9.32.0",
     "eslint-config-prettier": "10.1.8",
@@ -29,6 +31,7 @@
     "typescript-eslint": "8.38.0"
   },
   "dependencies": {
-    "@prisma/client": "6.13.0"
+    "@prisma/client": "6.13.0",
+    "bcrypt": "6.0.0"
   }
 }
