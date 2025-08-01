@@ -115,7 +115,7 @@ class ServiceUsuario {
 
     async listaHistoricoUsuario(id: string) {
         try {
-            const usuarios = await prisma.logMusica.findMany({
+            const historico = await prisma.logMusica.findMany({
                 where: {
                     usuarioId: id,
                 },
@@ -127,7 +127,7 @@ class ServiceUsuario {
                     musica: { select: { nome: true } },
                 },
             });
-            return usuarios;
+            return historico;
         } catch (erro) {
             throw new Error(`Erro ao listar histórico: ${erro}`);
         }
@@ -135,7 +135,7 @@ class ServiceUsuario {
 
     async listaMusicasSalvasUsuario(id: string) {
         try {
-            const musicas = await prisma.musicaSalva.findMany({
+            const musicasSalvas = await prisma.musicaSalva.findMany({
                 where: {
                     usuarioId: id,
                 },
@@ -156,7 +156,7 @@ class ServiceUsuario {
                     },
                 },
             });
-            return musicas;
+            return musicasSalvas;
         } catch (erro) {
             throw new Error(`Erro ao listar músicas salvas: ${erro}`);
         }
