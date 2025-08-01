@@ -123,6 +123,14 @@ class ServiceUsuario {
             }
         })
     }
+
+    async listaMusicasSalvasUsuario(id: string) {
+        await prisma.musicaSalva.findMany({
+            where: {
+                usuarioId: id
+            }
+        })
+    }
 }
 
 export default new ServiceUsuario();
