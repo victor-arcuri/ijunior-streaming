@@ -1,11 +1,11 @@
 import prisma from '../../database/prismaClient';
 import bcrypt from 'bcrypt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { Usuario, Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 class ServiceUsuario {
     // Cria novo usuário
-    async criarUsuario(body: Usuario) {
+    async criarUsuario(body: Prisma.UsuarioCreateInput) {
         const hashSenha = await bcrypt.hash(body.senha, 10);
         const usuario: Prisma.UsuarioCreateInput = {
             nome: body.nome,
@@ -63,7 +63,7 @@ class ServiceUsuario {
     // Retoma o usuário com id especificado
     async listarUsuarioID(id: string) {
         try {
-            const usuario = await prisma.usuario.findFirst({
+            const usuario = await prisma.usuario.findUnique({
                 where: {
                     id: id,
                 },
