@@ -1,5 +1,4 @@
 import prisma from '../../database/prismaClient';
-import { v4 as uuidv4 } from 'uuid'; // Geração automática de id
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Usuario } from '@prisma/client';
 
@@ -7,7 +6,6 @@ class ServiceUsuario {
     // Cria novo usuário
     async criarUsuario(body: Usuario) {
         const usuario = {
-            id: uuidv4(),
             nome: body.nome,
             email: body.email,
             senha: body.senha,
