@@ -110,19 +110,17 @@ class ServiceUsuario {
     }
 
     // Atualiza informações do usuário de id especificado
-    async atualizaUsuario(id: string, body: Usuario) {
+    async atualizaUsuario(id: string, body: Prisma.UsuarioUpdateInput) {
+        const usuarioUpdate: Prisma.UsuarioUpdateInput = { ...body };
+        if (typeof body.senha === "string") {
+            usuarioUpdate.senha = await bcrypt.hash(body.senha, 10);
+        }
         try {
             const usuario = await prisma.usuario.update({
                 where: {
                     id: id,
                 },
-                data: {
-                    nome: body.nome,
-                    email: body.email,
-                    senha: body.senha,
-                    privilegio: body.privilegio,
-                    foto: body.foto,
-                },
+                data: usuarioUpdate
             });
             return usuario;
         } catch (erro) {
