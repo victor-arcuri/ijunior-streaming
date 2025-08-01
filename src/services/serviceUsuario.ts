@@ -1,14 +1,16 @@
 import prisma from '../../database/prismaClient';
+import bcrypt from 'bcrypt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Usuario } from '@prisma/client';
 
 class ServiceUsuario {
     // Cria novo usuário
     async criarUsuario(body: Usuario) {
+        const hashSenha = await bcrypt.hash(body.senha, 10);
         const usuario = {
             nome: body.nome,
             email: body.email,
-            senha: body.senha,
+            senha: hashSenha,
             privilegio: body.privilegio,
             foto: body.foto,
         } as Usuario;
