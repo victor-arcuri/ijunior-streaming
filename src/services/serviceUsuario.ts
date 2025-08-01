@@ -80,7 +80,7 @@ class ServiceUsuario {
     // Retoma o usuário com email especificado
     async listarUsuarioEmail(email: string) {
         try {
-            const usuario = await prisma.usuario.findFirst({
+            const usuario = await prisma.usuario.findUnique({
                 where: {
                     email: email,
                 },
