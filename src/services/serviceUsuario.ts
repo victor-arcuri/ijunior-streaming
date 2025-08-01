@@ -13,7 +13,7 @@ class ServiceUsuario {
             senha: hashSenha,
             privilegio: body.privilegio,
             foto: body.foto,
-        }
+        };
 
         try {
             const usuarioCriado = await prisma.usuario.create({ data: usuario });
@@ -51,7 +51,7 @@ class ServiceUsuario {
                     id: 'asc',
                 },
                 omit: {
-                    senha: true
+                    senha: true,
                 },
             });
             return usuarios;
@@ -68,7 +68,7 @@ class ServiceUsuario {
                     id: id,
                 },
                 omit: {
-                    senha: true
+                    senha: true,
                 },
             });
             return usuario;
@@ -85,7 +85,7 @@ class ServiceUsuario {
                     email: email,
                 },
                 omit: {
-                    senha: true
+                    senha: true,
                 },
             });
             return usuario;
@@ -97,7 +97,7 @@ class ServiceUsuario {
     // Atualiza informações do usuário de id especificado
     async atualizaUsuario(id: string, body: Prisma.UsuarioUpdateInput) {
         const usuarioUpdate: Prisma.UsuarioUpdateInput = { ...body };
-        if (typeof body.senha === "string") {
+        if (typeof body.senha === 'string') {
             usuarioUpdate.senha = await bcrypt.hash(body.senha, 10);
         }
         try {
@@ -105,7 +105,7 @@ class ServiceUsuario {
                 where: {
                     id: id,
                 },
-                data: usuarioUpdate
+                data: usuarioUpdate,
             });
             return usuario;
         } catch (erro) {
@@ -114,20 +114,20 @@ class ServiceUsuario {
     }
 
     async listaHistoricoUsuario(id: string) {
-        try { 
+        try {
             const usuarios = await prisma.logMusica.findMany({
                 where: {
-                    usuarioId: id
+                    usuarioId: id,
                 },
                 orderBy: {
-                    tempo: 'desc'
+                    tempo: 'desc',
                 },
                 select: {
                     tempo: true,
-                    musica: {select: {nome: true}}
-                }
-            })
-            return usuarios
+                    musica: { select: { nome: true } },
+                },
+            });
+            return usuarios;
         } catch (erro) {
             throw new Error(`Erro ao listar histórico: ${erro}`);
         }
@@ -137,7 +137,7 @@ class ServiceUsuario {
         try {
             const musicas = await prisma.musicaSalva.findMany({
                 where: {
-                    usuarioId: id
+                    usuarioId: id,
                 },
                 select: {
                     musica: {
@@ -147,15 +147,15 @@ class ServiceUsuario {
                                 select: {
                                     artista: {
                                         select: {
-                                            nome: true
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            })
+                                            nome: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            });
             return musicas;
         } catch (erro) {
             throw new Error(`Erro ao listar músicas salvas: ${erro}`);
