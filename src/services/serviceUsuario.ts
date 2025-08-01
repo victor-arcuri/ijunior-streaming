@@ -112,6 +112,17 @@ class ServiceUsuario {
             throw new Error(`Erro ao atualizar usuário de id ${id}: ${erro}`);
         }
     }
+
+    async listaHistoricoUsuario(id: string) {
+        await prisma.logMusica.findMany({
+            where: {
+                usuarioId: id
+            },
+            orderBy: {
+                tempo: 'desc'
+            }
+        })
+    }
 }
 
 export default new ServiceUsuario();
