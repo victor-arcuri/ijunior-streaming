@@ -50,13 +50,8 @@ class ServiceUsuario {
                 orderBy: {
                     id: 'asc',
                 },
-                select: {
-                    id: true,
-                    nome: true,
-                    email: true,
-                    senha: false,
-                    privilegio: true,
-                    foto: true,
+                omit: {
+                    senha: true
                 },
             });
             return usuarios;
@@ -72,13 +67,8 @@ class ServiceUsuario {
                 where: {
                     id: id,
                 },
-                select: {
-                    id: true,
-                    nome: true,
-                    email: true,
-                    senha: false,
-                    privilegio: true,
-                    foto: true,
+                omit: {
+                    senha: true
                 },
             });
             return usuario;
@@ -94,13 +84,8 @@ class ServiceUsuario {
                 where: {
                     email: email,
                 },
-                select: {
-                    id: true,
-                    nome: true,
-                    email: true,
-                    senha: false,
-                    privilegio: true,
-                    foto: true,
+                omit: {
+                    senha: true
                 },
             });
             return usuario;
