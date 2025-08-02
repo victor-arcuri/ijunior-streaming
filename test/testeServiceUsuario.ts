@@ -1,17 +1,17 @@
-import { Privilegios, Usuario } from '@prisma/client';
+import { Privilegios, Prisma } from '@prisma/client';
 import ServiceUsuario from '../src/services/serviceUsuario';
 
 class TesteDaServiceDeUsuario {
     // Insere um usuario no banco de dados
     async test_create() {
         try {
-            const userData = {
+            const userData: Prisma.UsuarioCreateInput = {
                 nome: 'João Bobão',
                 senha: '12345',
                 email: 'joao.p.feijao@gmail.com',
                 foto: null,
                 privilegio: Privilegios.PADRAO,
-            } as Usuario;
+            };
             const user = await ServiceUsuario.criarUsuario(userData);
             console.log(user);
         } catch (e) {
@@ -32,13 +32,13 @@ class TesteDaServiceDeUsuario {
     // Atualiza um usuario do banco de dados
     async test_update(id: string) {
         try {
-            const userData = {
+            const userData: Prisma.UsuarioUpdateInput = {
                 nome: 'João Não Bobão',
                 senha: '12345',
                 email: 'joao.p.feijao@gmail.com',
                 foto: null,
                 privilegio: Privilegios.PADRAO,
-            } as Usuario;
+            };
             await ServiceUsuario.atualizaUsuario(id, userData);
             console.log('Usuário atualizado com sucesso!');
         } catch (e) {

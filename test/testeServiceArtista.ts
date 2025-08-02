@@ -1,15 +1,15 @@
 import ServiceArtista from '../src/services/serviceArtista';
-import { Artista } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 class TesteDaServiceDeArtista {
     // Insere um artista no banco de dados
     async test_create() {
         try {
-            const artistaData = {
+            const artistaData: Prisma.ArtistaCreateInput = {
                 nome: 'Artista Teste',
                 foto: null,
                 streams: 0
-            } as Artista;
+            }
             const artista = await ServiceArtista.criarArtista(artistaData);
             console.log(artista);
         } catch (e) {
@@ -30,11 +30,11 @@ class TesteDaServiceDeArtista {
     // Atualiza um artista do banco de dados
     async test_update(id: string) {
         try {
-            const artistaData = {
+            const artistaData: Prisma.ArtistaUpdateInput = {
                 nome: 'Artista Teste Atualizado',
                 foto: 'nova_foto.jpg',
                 streams: 1000
-            } as Artista;
+            };
             await ServiceArtista.atualizaArtista(id, artistaData);
             console.log('Artista atualizado com sucesso!');
         } catch (e) {
