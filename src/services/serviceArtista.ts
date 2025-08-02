@@ -15,11 +15,6 @@ class ServiceArtista {
             const artistaCriado = await prisma.artista.create({ data: artista });
             return artistaCriado;
         } catch (erro) {
-            if (erro instanceof PrismaClientKnownRequestError) {
-                if (erro.code === 'P2002') {
-                    throw new Error('Erro ao criar artista: nome já está em uso');
-                }
-            }
             throw new Error(`Erro ao criar artista: ${erro}`);
         }
     }
@@ -93,6 +88,7 @@ class ServiceArtista {
                             id: true,
                             nome: true,
                             genero: true,
+                            album: true
                         }
                     }
                 }
