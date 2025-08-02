@@ -75,6 +75,24 @@ class TesteDaServiceDeUsuario {
             console.error(e);
         }
     }
+
+    async test_historico(id: string) {
+        try {
+            const hist = await ServiceUsuario.listaHistoricoUsuario(id);
+            console.log(hist);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async test_salvas(id: string) {
+        try {
+            const salvas = await ServiceUsuario.listaMusicasSalvasUsuario(id);
+            console.log(JSON.stringify(salvas, null, 2));
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
 
 const teste = new TesteDaServiceDeUsuario();
