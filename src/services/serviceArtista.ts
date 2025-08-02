@@ -1,5 +1,4 @@
 import prisma from '../../database/prismaClient';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Prisma } from '@prisma/client';
 
 class ServiceArtista {
