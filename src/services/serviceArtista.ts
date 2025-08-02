@@ -7,7 +7,7 @@ class ServiceArtista {
         const artista: Prisma.ArtistaCreateInput = {
             nome: body.nome,
             foto: body.foto,
-            streams: body.streams
+            streams: body.streams,
         };
 
         try {
@@ -87,10 +87,10 @@ class ServiceArtista {
                             id: true,
                             nome: true,
                             genero: true,
-                            album: true
-                        }
-                    }
-                }
+                            album: true,
+                        },
+                    },
+                },
             });
             return musicas;
         } catch (erro) {

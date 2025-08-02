@@ -8,8 +8,8 @@ class TesteDaServiceDeArtista {
             const artistaData: Prisma.ArtistaCreateInput = {
                 nome: 'Artista Teste',
                 foto: null,
-                streams: 0
-            }
+                streams: 0,
+            };
             const artista = await ServiceArtista.criarArtista(artistaData);
             console.log(artista);
         } catch (e) {
@@ -33,7 +33,7 @@ class TesteDaServiceDeArtista {
             const artistaData: Prisma.ArtistaUpdateInput = {
                 nome: 'Artista Teste Atualizado',
                 foto: 'nova_foto.jpg',
-                streams: 1000
+                streams: 1000,
             };
             await ServiceArtista.atualizaArtista(id, artistaData);
             console.log('Artista atualizado com sucesso!');
