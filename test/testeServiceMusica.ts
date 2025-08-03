@@ -7,7 +7,7 @@ import {
   atualizarMusica,
   deletarMusica,
   listarMusicasDoArtista
-} from '../../services/serviceMusica'; 
+}from '../src/services/serviceMusica';
 
 const prisma = new PrismaClient();
 
