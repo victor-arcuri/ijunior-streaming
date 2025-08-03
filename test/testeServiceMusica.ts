@@ -1,36 +1,18 @@
-import { PrismaClient } from '@prisma/client';
-import {
-  criarMusica,
-  vincularArtista,
-  listarMusicas,
-  buscarMusicaPorId,
-  atualizarMusica,
-  deletarMusica,
-  listarMusicasDoArtista
-}from '../src/services/serviceMusica'
-
-const prisma = new PrismaClient();
+import ServiceMusica from '../src/services/serviceMusica'; 
+import ServiceArtista from '../src/services/serviceArtista';
+import { Prisma } from '@prisma/client';
 
 class TesteDaServiceDeMusica {
   private musicaId: string = '';
   private artistaId: string = '';
 
   async setup() {
-    const artista = await prisma.artista.create({
-      data: { nome: 'Artista de Teste', foto: null } // Adicionado campo foto
-    });
+    const artista_info: Prisma.ArtistaCreateInput = {
+      nome: 'Artista de Teste', 
+      foto: null 
+    }
+    const artista = await ServiceArtista.criarArtista(artista_info);
     this.artistaId = artista.id;
-  }
-
-  async cleanup() {
-    await prisma.$transaction([
-      prisma.autoria.deleteMany(),
-      prisma.musicaSalva.deleteMany(),
-      prisma.logMusica.deleteMany(),
-      prisma.musica.deleteMany(),
-      prisma.artista.deleteMany(),
-    ]);
-    await prisma.$disconnect();
   }
 
   async test_create() {
