@@ -40,12 +40,12 @@ class ServiceMusica {
                     id: 'asc',
                 },
                 include: {
-                  autoria: {
-                    include: {
-                      artista: true
-                    }
-                  }
-                }
+                    autoria: {
+                        include: {
+                            artista: true,
+                        },
+                    },
+                },
             });
             return musicas;
         } catch (erro) {
@@ -61,12 +61,12 @@ class ServiceMusica {
                     id: id,
                 },
                 include: {
-                  autoria: {
-                    include: {
-                      artista: true
-                    }
-                  }
-                }
+                    autoria: {
+                        include: {
+                            artista: true,
+                        },
+                    },
+                },
             });
             return musica;
         } catch (erro) {
@@ -91,15 +91,15 @@ class ServiceMusica {
     }
 
     // Vincula um artista à musica
-    async vinculaMusicaArtista(data:Prisma.AutoriaCreateInput){
-      try{
-        const autoria = await prisma.autoria.create({
-          data: data
-        });
-        return autoria;
-      } catch (e){
-          throw new Error(`Erro ao vincular artista à música: ${e}`)
-      }
+    async vinculaMusicaArtista(data: Prisma.AutoriaCreateInput) {
+        try {
+            const autoria = await prisma.autoria.create({
+                data: data,
+            });
+            return autoria;
+        } catch (e) {
+            throw new Error(`Erro ao vincular artista à música: ${e}`);
+        }
     }
 }
 
