@@ -16,49 +16,68 @@ class TesteDaServiceDeMusica {
   }
 
   async test_create() {
-    const musica = await criarMusica('Música Teste', 'ROCK', 'Álbum Teste');
+    const musica_data: Prisma.MusicaCreateInput = {
+      nome: 'Música Teste',
+      genero: 'Rock',
+      album: 'Álbum Teste'
+    }
+    const musica = await ServiceMusica.criarMusica(musica_data);
     this.musicaId = musica.id;
     console.log('Música criada:', musica);
     return musica;
   }
 
   async test_vincularArtista() {
-    const resultado = await vincularArtista(this.musicaId, this.artistaId);
-    console.log('Artista vinculado:', resultado);
-    return resultado;
+    const autoria_data: Prisma.AutoriaCreateInput = {
+      artista: {
+        connect: { 
+          id: this.artistaId 
+        }
+      },
+      musica: {
+        connect: { 
+          id: this.musicaId 
+        }
+      }
+    }
+    const autoria = await ServiceMusica.vinculaMusicaArtista(autoria_data);
+    console.log('Artista e música vinculados:', autoria);
+    return autoria;
   }
 
   async test_listar() {
-    const musicas = await listarMusicas();
+    const musicas = await ServiceMusica.listarMusicas();
     console.log('Músicas encontradas:', JSON.stringify(musicas, null, 2));
     return musicas;
   }
 
   async test_buscarPorId() {
-    const musica = await buscarMusicaPorId(this.musicaId);
+    const musica = await ServiceMusica.listarMusicaID(this.musicaId);
     console.log('Música encontrada por ID:', musica);
     return musica;
   }
 
   async test_atualizar() {
-    const atualizada = await atualizarMusica(this.musicaId, { 
-      genero: 'POP',
+    const musica_data: Prisma.MusicaUpdateInput = {
+      genero: 'Pop',
       album: 'Álbum Atualizado'
-    });
+    }
+    const atualizada = await ServiceMusica.atualizaMusica(this.musicaId, musica_data);
     console.log('Música atualizada:', atualizada);
     return atualizada;
   }
 
-  async test_listarPorArtista() {
-    const musicas = await listarMusicasDoArtista(this.artistaId);
-    console.log('Músicas do artista:', JSON.stringify(musicas, null, 2));
-    return musicas;
-  }
-
   async test_deletar() {
-    await deletarMusica(this.musicaId);
+    await ServiceMusica.deletarMusica(this.musicaId);
     console.log('Música deletada com sucesso');
   }
+
+  async test_autoresMusica(){
+    const autores = await ServiceMusica.autoresMusica(this.musicaId);
+    console.log('Autores da música:', JSON.stringify(autores, null, 2));
+    return autores;
+  }
+
 }
 
 (async () => {
@@ -69,7 +88,7 @@ class TesteDaServiceDeMusica {
     await tester.setup();
     
     console.log('\n=== TESTE DE CRIAÇÃO ===');
-    const musica = await tester.test_create();
+    await tester.test_create();
     
     console.log('\n=== TESTE DE VINCULAÇÃO ===');
     await tester.test_vincularArtista();
@@ -83,16 +102,14 @@ class TesteDaServiceDeMusica {
     console.log('\n=== TESTE DE ATUALIZAÇÃO ===');
     await tester.test_atualizar();
     
-    console.log('\n=== TESTE DE MÚSICAS POR ARTISTA ===');
-    await tester.test_listarPorArtista();
-    
     console.log('\n=== TESTE DE EXCLUSÃO ===');
     await tester.test_deletar();
+
+    console.log('\n=== TESTE DE AUTORIA ===');
+    await tester.test_autoresMusica();
     
     console.log('\n=== TESTES CONCLUÍDOS COM SUCESSO ===');
   } catch (e) {
     console.error('\n=== ERRO DURANTE OS TESTES ===', e);
-  } finally {
-    await tester.cleanup();
   }
 })();
