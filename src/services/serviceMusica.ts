@@ -90,24 +90,6 @@ class ServiceMusica {
         }
     }
 
-    // Lista os autores de uma música específica
-    async autoresMusica(id: string) {
-        try {
-            const autores = await prisma.artista.findMany({
-                where: {
-                    autoria: {
-                        some: {
-                            musicaId: id,
-                        },
-                    },
-                },
-            });
-            return autores;
-        } catch (e) {
-            throw new Error(`Erro ao listar autores da música de id ${id}: ${e}`);
-        }
-    }
-
     // Vincula um artista à musica
     async vinculaMusicaArtista(data:Prisma.AutoriaCreateInput){
       try{

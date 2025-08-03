@@ -72,12 +72,6 @@ class TesteDaServiceDeMusica {
     console.log('Música deletada com sucesso');
   }
 
-  async test_autoresMusica(){
-    const autores = await ServiceMusica.autoresMusica(this.musicaId);
-    console.log('Autores da música:', JSON.stringify(autores, null, 2));
-    return autores;
-  }
-
 }
 
 (async () => {
@@ -104,9 +98,6 @@ class TesteDaServiceDeMusica {
     
     console.log('\n=== TESTE DE EXCLUSÃO ===');
     await tester.test_deletar();
-
-    console.log('\n=== TESTE DE AUTORIA ===');
-    await tester.test_autoresMusica();
     
     console.log('\n=== TESTES CONCLUÍDOS COM SUCESSO ===');
   } catch (e) {
