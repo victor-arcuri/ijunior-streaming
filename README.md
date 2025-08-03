@@ -13,14 +13,62 @@ Suas orientações podem ser encontradas no Notion com mais detalhes [nesse link
 #### Objetivos 
 - [X] Criar e configurar o repositório do projeto
 - [X] Inicializar a estrutura do prisma 
-- [ ] Criar o início da arquitetura MVC (services)
-- [ ] Modelar o banco de dado
-- [ ] Criar as schemas referentes às entidades do banco
-- [ ] Criar as services de CRUD referentes às entidades
-- [ ] Atualizar a documentação do repositório
+- [X] Modelar o banco de dados 
+- [X] Criar as schemas referentes às entidades do banco
+- [X] Criar o início da arquitetura MVC (services) 
+- [X] Criar as services de CRUD referentes às entidades
+- [X] Atualizar a documentação do repositório
 
 ## Modelagem do Banco 📝
-_Adicionar modelagem do banco aqui (imagens, relações, entidades, etc...)_
+O banco de dados retrata três entidades principais e suas relações:
+
+![Diagrama representando as relações das tabelas do banco de dados](/public/imgs/db_schema.png)
+
+### Entidades
+
+#### Usuário
+O usuário é aquele que irá interagir diretamente com a plataforma e utilizar seus recursos.
+
+Como elementos principais, possui:
+
+- **id**: representa seu identificador único na tabela
+- **email**: email único registrado por cada usuário
+- **nome**: nome do usuário
+- **privilegio**: nível de acesso aos recursos da plataforma, podendo ser (PADRAO, ASSINANTE ou DEV)
+- **senha**: senha para acessar a conta do usuário
+- **foto**: url para a foto de perfil do usuário
+
+#### Artista
+O artista é aquele que lança as músicas. Seu perfil é representativo, e não é acessado diretamente por um usuário, apenas servindo para agrupar suas músicas.
+
+Como elementos principais, possui:
+
+- **id**: representa seu identificador único na tabela
+- **nome**: nome artístico
+- **streams**: número de vezes que escutaram suas músicas
+- **foto**: url para foto de perfil do artista
+
+#### Música
+A música é o centro do serviço, sendo lançada sob autoria dos artistas e podendo ser salva pelos usuários e também escutada por eles
+
+Como elementos principais, possui:
+
+- **id**: representa seu identificador único na tabela
+- **nome**: nome da música
+- **genero**: o gênero musical da publicação
+- **album**: sob qual album, se não for um single, a música foi lançada
+
+### Relações
+
+#### Autoria
+A tabela de autoria representa a relação entre uma música e um (ou mais) artistas, sendo caracterizada por quem publicou uma música. (1->N)
+
+#### Logs
+Os logs representam quando um usuário ouviu uma música, guardando o momento no tempo exato em que isso ocorreu. É uma relação de uma música para um usuário (n->n)
+
+#### Músicas Salvas
+Representa as músicas favoritadas por um usuário. É uma relação de uma música para um usuário (n->n)
+
 
 ## Como Contribuir 🚀
 Inicialmente, solicite permisões de colaboração ao administrador do repositório.
@@ -49,7 +97,7 @@ git commit -m "docs: para atualizar a documentação"
 git commit -m "fix: para correção de erros"
 ```
 
-Ao final, faça os pushes e crie o push request para a branch *develop* no GitHub
+Ao final, faça os pushes e crie o pull request para a branch *develop* no GitHub
 ```
 git push
 ```
