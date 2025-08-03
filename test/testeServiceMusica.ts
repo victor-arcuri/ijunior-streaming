@@ -7,7 +7,7 @@ import {
   atualizarMusica,
   deletarMusica,
   listarMusicasDoArtista
-} from '../../services/serviceMusica'; // Corrigido para ../../services
+} from '../../services/serviceMusica'; 
 
 const prisma = new PrismaClient();
 
@@ -17,7 +17,7 @@ class TesteDaServiceDeMusica {
 
   async setup() {
     const artista = await prisma.artista.create({
-      data: { nome: 'Artista de Teste', foto: null } // Adicionado campo foto
+      data: { nome: 'Artista de Teste', foto: null } 
     });
     this.artistaId = artista.id;
   }
