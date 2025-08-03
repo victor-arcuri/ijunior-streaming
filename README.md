@@ -16,8 +16,8 @@ Suas orientações podem ser encontradas no Notion com mais detalhes [nesse link
 - [X] Modelar o banco de dados 
 - [X] Criar as schemas referentes às entidades do banco
 - [X] Criar o início da arquitetura MVC (services) 
-- [ ] Criar as services de CRUD referentes às entidades
-- [ ] Atualizar a documentação do repositório
+- [X] Criar as services de CRUD referentes às entidades
+- [X] Atualizar a documentação do repositório
 
 ## Modelagem do Banco 📝
 O banco de dados retrata três entidades principais e suas relações:
