@@ -1,78 +1,124 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import prisma from '../../database/prismaClient';
+import { Prisma } from '@prisma/client';
 
+class ServiceMusica {
+    // Cria nova música
+    async criarMusica(body: Prisma.MusicaCreateInput) {
+        const musica: Prisma.MusicaCreateInput = {
+            nome: body.nome,
+            genero: body.genero,
+            album: body.album,
+        };
 
-export const criarMusica = async (
-  nome: string,
-  genero?: string,
-  album?: string
-) => {
-  return await prisma.musica.create({
-    data: { nome, genero, album }
-  });
-};
+        try {
+            const musicaCriada = await prisma.musica.create({ data: musica });
 
-// Vincula um artista à musica
-export const vincularArtista = async (
-  musicaId: string,
-  artistaId: string
-) => {
-  return await prisma.autoria.create({
-    data: { musicaId, artistaId }
-  });
-};
-
-// Lista todas as músicas com seus artistas
-export const listarMusicas = async () => {
-  return await prisma.musica.findMany({
-    include: {
-      autoria: {
-        include: {
-          artista: true
+            return musicaCriada;
+        } catch (erro) {
+            throw new Error(`Erro ao criar música: ${erro}`);
         }
+    }
+
+    // Deleta música com id especifico
+    async deletarMusica(id: string) {
+        try {
+            await prisma.musica.delete({
+                where: {
+                    id: id,
+                },
+            });
+        } catch (erro) {
+            throw new Error(`Erro ao deletar música: ${erro}`);
+        }
+    }
+
+    // Lista todas as músicas registradas
+    async listarMusicas() {
+        try {
+            const musicas = await prisma.musica.findMany({
+                orderBy: {
+                    id: 'asc',
+                },
+                include: {
+                  autoria: {
+                    include: {
+                      artista: true
+                    }
+                  }
+                }
+            });
+            return musicas;
+        } catch (erro) {
+            throw new Error(`Erro ao listar músicas: ${erro}`);
+        }
+    }
+
+    // Retoma a música com id especificado
+    async listarMusicaID(id: string) {
+        try {
+            const musica = await prisma.musica.findUnique({
+                where: {
+                    id: id,
+                },
+                include: {
+                  autoria: {
+                    include: {
+                      artista: true
+                    }
+                  }
+                }
+            });
+            return musica;
+        } catch (erro) {
+            throw new Error(`Erro ao retomar musica de id ${id}: ${erro}`);
+        }
+    }
+
+    // Atualiza informações da música de id especificado
+    async atualizaMusica(id: string, body: Prisma.MusicaUpdateInput) {
+        const musicaUpdate: Prisma.MusicaUpdateInput = { ...body };
+        try {
+            const musica = await prisma.musica.update({
+                where: {
+                    id: id,
+                },
+                data: musicaUpdate,
+            });
+            return musica;
+        } catch (erro) {
+            throw new Error(`Erro ao atualizar música de id ${id}: ${erro}`);
+        }
+    }
+
+    // Lista os autores de uma música específica
+    async autoresMusica(id: string) {
+        try {
+            const autores = await prisma.artista.findMany({
+                where: {
+                    autoria: {
+                        some: {
+                            musicaId: id,
+                        },
+                    },
+                },
+            });
+            return autores;
+        } catch (e) {
+            throw new Error(`Erro ao listar autores da música de id ${id}: ${e}`);
+        }
+    }
+
+    // Vincula um artista à musica
+    async vinculaMusicaArtista(data:Prisma.AutoriaCreateInput){
+      try{
+        const autoria = await prisma.autoria.create({
+          data: data
+        });
+        return autoria;
+      } catch (e){
+          throw new Error(`Erro ao vincular artista à música: ${e}`)
       }
     }
-  });
-};
+}
 
-// Busca música por ID com relacionamentos
-export const buscarMusicaPorId = async (id: string) => {
-  return await prisma.musica.findUnique({
-    where: { id },
-    include: {
-      autoria: {
-        include: {
-          artista: true
-        }
-      }
-    }
-  });
-};
-
-export const atualizarMusica = async (
-  id: string,
-  dados: { nome?: string; genero?: string; album?: string }
-) => {
-  return await prisma.musica.update({
-    where: { id },
-    data: dados
-  });
-};
-
-// Remove uma música (cascateia para Autoria, LogMusica e MusicaSalva)
-export const deletarMusica = async (id: string) => {
-  return await prisma.musica.delete({
-    where: { id }
-  });
-};
-
-// Lista músicas de um artista específico
-export const listarMusicasDoArtista = async (artistaId: string) => {
-  return await prisma.autoria.findMany({
-    where: { artistaId },
-    include: {
-      musica: true,
-      artista: true
-    }
-  });
-};
+export default new ServiceMusica();
