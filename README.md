@@ -33,8 +33,13 @@ O projeto segue em desenvolvimento na semana 06, a partir da criação das contr
 - [] Documentar os endpoints todos da API na documentação do repositório
 - [] Atualizar checklists da documentação do repositório
 
-> [!TIP]
-> Lembre de utilizar o eslint e o prettier!
+> [!Important]
+> Para os endpoints da controller, siga o padrão "plural" (especificado no material do Notion dessa semana)
+
+> [!Warning]
+> Não esqueça de utilzar o eslint e o prettier antes de qualquer pull request!
+
+
 
 
 ## Modelagem do Banco 📝
