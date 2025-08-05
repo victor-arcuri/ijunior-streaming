@@ -19,6 +19,24 @@ Suas orientações podem ser encontradas no Notion com mais detalhes [nesse link
 - [X] Criar as services de CRUD referentes às entidades
 - [X] Atualizar a documentação do repositório
 
+### Semana 06
+O projeto segue em desenvolvimento na semana 06, a partir da criação das controllers da API, implementando as funções de CRUD desenvolvidas na Semana 05.
+
+#### Objetivos
+- [X] Atualizar documentação com objetivos da semana
+- [X] Configurar o express e suas dependências
+- [X] Corrigir a arquitetura para aplicar domains
+- [X] Criar instância do express com CORS e utilizando os routers
+- [X] Desenvolver a controller (funções e endpoints) do Usuário
+- [] Desenvolver a controller (funções e endpoints) do Artista
+- [] Desenvolver a controller (funções e endpoints) da Música
+- [] Documentar os endpoints todos da API na documentação do repositório
+- [] Atualizar checklists da documentação do repositório
+
+> [!TIP]
+> Lembre de utilizar o eslint e o prettier!
+
+
 ## Modelagem do Banco 📝
 O banco de dados retrata três entidades principais e suas relações:
 
