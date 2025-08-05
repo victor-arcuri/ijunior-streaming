@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import prisma from '../database/prismaClient';
+import prisma from '../config/prismaClient';
 import { Prisma } from '@prisma/client';
 
 function rand(max: number, min = 0) {

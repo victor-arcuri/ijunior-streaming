@@ -1,4 +1,4 @@
-import prisma from '../../database/prismaClient';
+import prisma from '../../config/prismaClient';
 import { Prisma } from '@prisma/client';
 
 class ServiceArtista {
