@@ -80,7 +80,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+# dist
 
 # Gatsby files
 .cache/
@@ -141,3 +141,6 @@ vite.config.ts.timestamp-*
 /generated/prisma
 
 /prisma/dev.db
+
+/dist/*
+!/build/.gitkeep
