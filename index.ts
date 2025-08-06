@@ -1,8 +1,8 @@
-import { app } from "./config/expressConfig.js";
-import dotenv from "dotenv";
+import { app } from './config/expressConfig.js';
+import dotenv from 'dotenv';
 
-dotenv.config()
+dotenv.config();
 
 app.listen(process.env.PORT, () => {
-    console.log(`Servidor hosteado na porta ${process.env.PORT}`)
-})
+    console.log(`Servidor hosteado na porta ${process.env.PORT}`);
+});
