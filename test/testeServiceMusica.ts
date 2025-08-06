@@ -1,5 +1,5 @@
-import ServiceMusica from '../src/domains/Music/services/serviceMusica';
-import ServiceArtista from '../src/domains/Artist/services/serviceArtista';
+import ServiceMusica from '../src/domains/Musica/services/serviceMusica';
+import ServiceArtista from '../src/domains/Artista/services/serviceArtista';
 import { Prisma } from '@prisma/client';
 
 class TesteDaServiceDeMusica {
