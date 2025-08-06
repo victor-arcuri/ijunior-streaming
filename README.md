@@ -31,7 +31,7 @@ O projeto segue em desenvolvimento na semana 06, a partir da criação das contr
 - [ ] Desenvolver a controller (funções e endpoints) do Artista
 - [ ] Desenvolver a controller (funções e endpoints) da Música
 - [ ] Documentar os endpoints todos da API na documentação do repositório
-- [] Atualizar checklists da documentação do repositório
+- [ ] Atualizar checklists da documentação do repositório
 
 > [!Important]
 > Para os endpoints da controller, siga o padrão "plural" (especificado no material do Notion dessa semana)
