@@ -1,9 +1,9 @@
 import express, { Express } from 'express';
 import cors, { CorsOptions } from 'cors';
 import dotenv from 'dotenv';
-import UserRouter from '../src/domains/User/controllers/index';
-import ArtistRouter from '../src/domains/Artist/controllers/index';
-import MusicRouter from '../src/domains/Music/controllers/index';
+import routerUsuario from '../src/domains/Usuario/controllers/controllerUsuario';
+import routerArtista from '../src/domains/Artista/controllers/controllerArtista';
+import routerMusica from '../src/domains/Musica/controllers/controllerMusica';
 
 dotenv.config();
 
@@ -21,6 +21,6 @@ app.use(
         extended: true,
     }),
 );
-app.use('/api/users', UserRouter);
-app.use('/api/artists', ArtistRouter);
-app.use('/api/songs', MusicRouter);
+app.use('/api/users', routerUsuario);
+app.use('/api/artists', routerArtista);
+app.use('/api/songs', routerMusica);
