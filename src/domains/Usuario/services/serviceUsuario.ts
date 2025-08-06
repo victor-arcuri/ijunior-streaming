@@ -1,4 +1,4 @@
-import prisma from '../../../../config/prismaClient';
+import prisma from '../../../../config/prismaClient.js';
 import bcrypt from 'bcrypt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Prisma } from '@prisma/client';

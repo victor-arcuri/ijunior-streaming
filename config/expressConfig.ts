@@ -1,9 +1,9 @@
 import express, { Express } from 'express';
 import cors, { CorsOptions } from 'cors';
 import dotenv from 'dotenv';
-import routerUsuario from '../src/domains/Usuario/controllers/controllerUsuario';
-import routerArtista from '../src/domains/Artista/controllers/controllerArtista';
-import routerMusica from '../src/domains/Musica/controllers/controllerMusica';
+import routerUsuario from '../src/domains/Usuario/controllers/controllerUsuario.js';
+import routerArtista from '../src/domains/Artista/controllers/controllerArtista.js';
+import routerMusica from '../src/domains/Musica/controllers/controllerMusica.js';
 
 dotenv.config();
 

@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import serviceUsuario from '../services/serviceUsuario';
+import serviceUsuario from '../services/serviceUsuario.js';
 import { Prisma } from '@prisma/client';
 
 const router = Router();

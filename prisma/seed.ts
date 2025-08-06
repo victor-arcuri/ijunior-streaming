@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
-import prisma from '../config/prismaClient';
-import { Prisma } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 function rand(max: number, min = 0) {
     return Math.floor(Math.random() * (max + 1)) + min;

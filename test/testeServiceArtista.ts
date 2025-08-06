@@ -1,4 +1,4 @@
-import ServiceArtista from '../src/domains/Artista/services/serviceArtista';
+import ServiceArtista from '../src/domains/Artista/services/serviceArtista.js';
 import { Prisma } from '@prisma/client';
 
 class TesteDaServiceDeArtista {
