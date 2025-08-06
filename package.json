@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsnd --rs --respawn --transpile-only --exit-child ./index.ts"
+    "start": "npx tsc --watch & npx nodemon dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "@types/node": "24.1.0",
     "eslint": "9.32.0",
     "eslint-config-prettier": "10.1.8",
+    "nodemon": "3.1.10",
     "prettier": "3.6.2",
     "ts-node": "10.9.2",
     "ts-node-dev": "2.0.0",
