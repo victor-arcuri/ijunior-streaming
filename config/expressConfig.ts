@@ -21,6 +21,6 @@ app.use(
         extended: true,
     }),
 );
-app.use('/api/users', routerUsuario);
-app.use('/api/artists', routerArtista);
-app.use('/api/songs', routerMusica);
+app.use('/api/usuarios', routerUsuario);
+app.use('/api/artistas', routerArtista);
+app.use('/api/musicas', routerMusica);
