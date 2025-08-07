@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import serviceUsuario from '../services/serviceUsuario.js';
 import { Prisma } from '@prisma/client';
+import { success } from '../../../../config/statusCodes.js';
 
 const router = Router();
 
@@ -16,7 +17,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
         } else {
             result = await serviceUsuario.listarUsuarios();
         }
-        res.status(200);
+        res.status(success.ACCEPTED);
         res.json(result);
     } catch (error) {
         next(error);
@@ -27,7 +28,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await serviceUsuario.listarUsuarioID(req.params.id);
-        res.status(200);
+        res.status(success.ACCEPTED);
         res.json(user);
     } catch (error) {
         next(error);
@@ -38,7 +39,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await serviceUsuario.deletarUsuario(req.params.id);
-        res.status(200);
+        res.status(success.ACCEPTED);
         res.json(user);
     } catch (error) {
         next(error);
@@ -55,7 +56,7 @@ router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
             senha: req.body.senha,
         };
         const user = await serviceUsuario.atualizaUsuario(req.params.id, user_info);
-        res.status(200);
+        res.status(success.ACCEPTED);
         res.json(user);
     } catch (error) {
         next(error);
@@ -72,7 +73,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
             senha: req.body.senha,
         };
         const user = await serviceUsuario.criarUsuario(user_info);
-        res.status(201);
+        res.status(success.CREATED);
         res.json(user);
     } catch (error) {
         next(error);
@@ -83,7 +84,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 router.get('/:id/salvas', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const musicas_salvas = await serviceUsuario.listaMusicasSalvasUsuario(req.params.id);
-        res.status(200);
+        res.status(success.ACCEPTED);
         res.json(musicas_salvas);
     } catch (error) {
         next(error);
@@ -94,7 +95,7 @@ router.get('/:id/salvas', async (req: Request, res: Response, next: NextFunction
 router.get('/:id/historico', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const historico = await serviceUsuario.listaHistoricoUsuario(req.params.id);
-        res.status(200);
+        res.status(success.ACCEPTED);
         res.json(historico);
     } catch (error) {
         next(error);
