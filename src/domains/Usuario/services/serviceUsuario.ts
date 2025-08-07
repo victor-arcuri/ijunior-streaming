@@ -16,7 +16,12 @@ class ServiceUsuario {
         };
 
         try {
-            const usuarioCriado = await prisma.usuario.create({ data: usuario });
+            const usuarioCriado = await prisma.usuario.create({ 
+                data: usuario,
+                omit: {
+                    senha: true
+                } 
+            });
 
             return usuarioCriado;
         } catch (erro) {
@@ -104,6 +109,9 @@ class ServiceUsuario {
             const usuario = await prisma.usuario.update({
                 where: {
                     id: id,
+                },
+                omit: {
+                    senha: true,
                 },
                 data: usuarioUpdate,
             });
