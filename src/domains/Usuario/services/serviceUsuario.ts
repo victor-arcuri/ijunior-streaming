@@ -16,11 +16,11 @@ class ServiceUsuario {
         };
 
         try {
-            const usuarioCriado = await prisma.usuario.create({ 
+            const usuarioCriado = await prisma.usuario.create({
                 data: usuario,
                 omit: {
-                    senha: true
-                } 
+                    senha: true,
+                },
             });
 
             return usuarioCriado;
