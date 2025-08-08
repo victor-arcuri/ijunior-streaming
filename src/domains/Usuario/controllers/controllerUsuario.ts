@@ -9,13 +9,16 @@ const router = Router();
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email = req.query.email as string | undefined;
-
+        const limit = req.query.limit ? Number(req.query.limit) : undefined;
+        const sort = (req.query.sort as string | undefined)?.toLowerCase();
+        const order: 'asc' | 'desc' | undefined =
+            sort === 'asc' || sort === 'desc' ? sort : undefined;
         let result;
 
         if (email) {
             result = await serviceUsuario.listarUsuarioEmail(email);
         } else {
-            result = await serviceUsuario.listarUsuarios();
+            result = await serviceUsuario.listarUsuarios(limit, order);
         }
         res.status(success.SUCCESS);
         res.json(result);
