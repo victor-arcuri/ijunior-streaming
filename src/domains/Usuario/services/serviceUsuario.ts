@@ -44,13 +44,11 @@ class ServiceUsuario {
     }
 
     // Lista todos os usuários registrados
-    async listarUsuarios(limit?: number) {
+    async listarUsuarios(limit?: number, order?:Prisma.SortOrder) {
         try {
-            console.log(typeof limit)
-            
             const usuarios = await prisma.usuario.findMany({
                 orderBy: {
-                    id: 'asc',
+                    id: order ?? "asc",
                 },
                 omit: {
                     senha: true,
