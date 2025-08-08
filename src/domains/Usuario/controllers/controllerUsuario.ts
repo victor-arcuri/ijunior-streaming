@@ -54,6 +54,7 @@ router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
             nome: req.body.nome,
             foto: req.body.foto,
             senha: req.body.senha,
+            privilegio: req.body.privilegio,
         };
         const user = await serviceUsuario.atualizaUsuario(req.params.id, user_info);
         res.status(success.SUCCESS);
@@ -71,6 +72,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
             nome: req.body.nome,
             foto: req.body.foto,
             senha: req.body.senha,
+            privilegio: req.body.privilegio,
         };
         const user = await serviceUsuario.criarUsuario(user_info);
         res.status(success.CREATED);
