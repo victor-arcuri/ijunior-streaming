@@ -8,13 +8,13 @@ const router = Router();
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email = req.query.email as string | undefined;
-
+        const limit = req.query.limit ? Number(req.query.limit) : undefined;
         let result;
 
         if (email) {
             result = await serviceUsuario.listarUsuarioEmail(email);
         } else {
-            result = await serviceUsuario.listarUsuarios();
+            result = await serviceUsuario.listarUsuarios(limit);
         }
         res.json(result);
     } catch (error) {
