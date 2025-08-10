@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { Prisma } from '@prisma/client';
 import serviceArtista from '../services/serviceArtista.js';
 import { success } from '../../../../config/statusCodes.js';
 
@@ -14,6 +15,18 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 })
 
-
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const artista: Prisma.ArtistaCreateInput = {
+            nome: req.body.nome,
+            streams: req.body.streams,
+            foto: req.body.foto
+        }
+        const artistaCriado = await serviceArtista.criarArtista(artista)
+        res.status(success.CREATED).json(artistaCriado)
+    } catch (err) {
+        next(err)
+    }
+})
 
 export default router;
