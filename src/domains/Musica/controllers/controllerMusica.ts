@@ -3,7 +3,6 @@ import serviceMusica from '../services/serviceMusica.js';
 import { Prisma } from '@prisma/client';
 import { success } from '../../../../config/statusCodes.js';
 
-
 const router = Router();
 
 // Lista as músicas
@@ -45,7 +44,7 @@ router.put('/id/:id', async (req: Request, res: Response, next: NextFunction) =>
         const music_info: Prisma.MusicaUpdateInput = {
             nome: req.body.nome,
             album: req.body.album,
-            genero: req.body.genero
+            genero: req.body.genero,
         };
         const music = await serviceMusica.atualizaMusica(req.params.id, music_info);
         res.status(success.SUCCESS);
@@ -71,11 +70,10 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-
-//Vincula um artista à uma música 
+//Vincula um artista à uma música
 router.post('/autoria', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const vinculo = await serviceMusica.vinculaMusicaArtista(req.body.artista,req.body.musica);
+        const vinculo = await serviceMusica.vinculaMusicaArtista(req.body.artista, req.body.musica);
         res.status(success.CREATED);
         res.json(vinculo);
     } catch (error) {
@@ -83,14 +81,14 @@ router.post('/autoria', async (req: Request, res: Response, next: NextFunction) 
     }
 });
 
-//Desvincula um artista de uma música 
+//Desvincula um artista de uma música
 router.delete('/autoria', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const vinculo_info: Prisma.AutoriaWhereUniqueInput = {
-            artistaId_musicaId:{
+            artistaId_musicaId: {
                 artistaId: req.body.artista,
-                musicaId: req.body.musica
-            }
+                musicaId: req.body.musica,
+            },
         };
         const vinculo = await serviceMusica.desvinculaMusicaArtista(vinculo_info);
         res.status(success.SUCCESS);
@@ -99,7 +97,5 @@ router.delete('/autoria', async (req: Request, res: Response, next: NextFunction
         next(error);
     }
 });
-
-
 
 export default router;

@@ -91,21 +91,21 @@ class ServiceMusica {
     }
 
     // Vincula um artista à musica
-    async vinculaMusicaArtista(artistaId:string, musicaId:string) {
+    async vinculaMusicaArtista(artistaId: string, musicaId: string) {
         try {
             const autoria = await prisma.autoria.create({
-                data:{
-                    artista:{
-                        connect:{
-                            id: artistaId
-                        }
+                data: {
+                    artista: {
+                        connect: {
+                            id: artistaId,
+                        },
                     },
-                    musica:{
-                        connect:{
-                            id: musicaId
-                        }
-                    }
-                }
+                    musica: {
+                        connect: {
+                            id: musicaId,
+                        },
+                    },
+                },
             });
             return autoria;
         } catch (e) {
@@ -117,14 +117,13 @@ class ServiceMusica {
     async desvinculaMusicaArtista(where: Prisma.AutoriaWhereUniqueInput) {
         try {
             const autoria = await prisma.autoria.delete({
-                where: where
+                where: where,
             });
             return autoria;
         } catch (e) {
             throw new Error(`Erro ao desvincular artista à música: ${e}`);
         }
     }
-
 }
 
 export default new ServiceMusica();
