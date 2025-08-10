@@ -29,7 +29,7 @@ O projeto segue em desenvolvimento na semana 06, a partir da criação das contr
 - [X] Criar instância do express com CORS e utilizando os routers
 - [X] Desenvolver a controller (funções e endpoints) do Usuário
 - [ ] Desenvolver a controller (funções e endpoints) do Artista
-- [ ] Desenvolver a controller (funções e endpoints) da Música
+- [X] Desenvolver a controller (funções e endpoints) da Música
 - [ ] Documentar os endpoints todos da API na documentação do repositório
 - [ ] Atualizar checklists da documentação do repositório
 
