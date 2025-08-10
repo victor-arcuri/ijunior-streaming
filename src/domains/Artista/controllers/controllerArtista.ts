@@ -40,6 +40,19 @@ router
         }
     })
 
-    
+    .put(async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const artista: Prisma.ArtistaUpdateInput = {
+                nome: req.body.nome,
+                streams: req.body.streams,
+                foto: req.body.foto
+            }
+            const artistaAtualizado = await serviceArtista.atualizaArtista(req.params.id, artista)
+            res.status(success.SUCCESS).json(artistaAtualizado)
+        } catch (err) {
+            next(err)
+        }
+    })
+
 
 export default router;
