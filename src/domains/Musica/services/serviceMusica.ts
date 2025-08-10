@@ -101,6 +101,7 @@ class ServiceMusica {
             throw new Error(`Erro ao vincular artista à música: ${e}`);
         }
     }
+
 }
 
 export default new ServiceMusica();
