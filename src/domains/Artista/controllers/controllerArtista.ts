@@ -29,4 +29,17 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 })
 
+router
+    .route('/id/:id')
+    .get(async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const artista = await serviceArtista.listarArtistaID(req.params.id)
+            res.status(success.SUCCESS).json(artista)
+        } catch (err) {
+            next(err)
+        }
+    })
+
+    
+
 export default router;
