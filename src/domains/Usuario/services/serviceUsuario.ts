@@ -210,7 +210,7 @@ class ServiceUsuario {
         }
     }
 
-    async criaHistoricoUsuario(usuario_id: string, musica_id: string, timestamp: Date) {
+    async criaHistoricoUsuario(usuario_id: string, musica_id: string) {
         try {
             const logMusica = await prisma.logMusica.create({
                 data: {
@@ -224,7 +224,6 @@ class ServiceUsuario {
                             id: musica_id,
                         },
                     },
-                    tempo: timestamp,
                 },
             });
             return logMusica;

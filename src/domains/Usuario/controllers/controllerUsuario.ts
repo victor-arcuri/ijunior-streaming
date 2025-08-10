@@ -141,7 +141,6 @@ router.post('/id/:id/historico', async (req: Request, res: Response, next: NextF
         const musicas_salvas = await serviceUsuario.criaHistoricoUsuario(
             req.params.id,
             req.body.musica,
-            req.body.tempo,
         );
         res.status(success.SUCCESS);
         res.json(musicas_salvas);
