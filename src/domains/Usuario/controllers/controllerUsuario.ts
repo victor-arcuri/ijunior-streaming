@@ -99,7 +99,10 @@ router.get('/id/:id/salvas', async (req: Request, res: Response, next: NextFunct
 // Adiciona músicas salvas ao usuário
 router.post('/id/:id/salvas', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const musicas_salvas = await serviceUsuario.salvaMusicaUsuario(req.params.id, req.body.musica);
+        const musicas_salvas = await serviceUsuario.salvaMusicaUsuario(
+            req.params.id,
+            req.body.musica,
+        );
         res.status(success.SUCCESS);
         res.json(musicas_salvas);
     } catch (error) {
@@ -110,14 +113,16 @@ router.post('/id/:id/salvas', async (req: Request, res: Response, next: NextFunc
 // Remove música salva do usuário
 router.delete('/id/:id/salvas', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const musicas_salvas = await serviceUsuario.removeMusicaSalvaUsuario(req.params.id, req.body.musica);
+        const musicas_salvas = await serviceUsuario.removeMusicaSalvaUsuario(
+            req.params.id,
+            req.body.musica,
+        );
         res.status(success.SUCCESS);
         res.json(musicas_salvas);
     } catch (error) {
         next(error);
     }
 });
-
 
 // Lista histórico do usuário
 router.get('/id/:id/historico', async (req: Request, res: Response, next: NextFunction) => {
@@ -133,7 +138,11 @@ router.get('/id/:id/historico', async (req: Request, res: Response, next: NextFu
 // Adiciona música ao histórico do usuário
 router.post('/id/:id/historico', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const musicas_salvas = await serviceUsuario.criaHistoricoUsuario(req.params.id, req.body.musica, req.body.tempo);
+        const musicas_salvas = await serviceUsuario.criaHistoricoUsuario(
+            req.params.id,
+            req.body.musica,
+            req.body.tempo,
+        );
         res.status(success.SUCCESS);
         res.json(musicas_salvas);
     } catch (error) {
@@ -151,6 +160,5 @@ router.delete('/id/:id/historico', async (req: Request, res: Response, next: Nex
         next(error);
     }
 });
-
 
 export default router;

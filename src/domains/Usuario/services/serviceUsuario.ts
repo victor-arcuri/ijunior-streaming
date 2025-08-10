@@ -134,7 +134,7 @@ class ServiceUsuario {
                 select: {
                     tempo: true,
                     musica: { select: { nome: true } },
-                    id: true
+                    id: true,
                 },
             });
             return historico;
@@ -162,7 +162,7 @@ class ServiceUsuario {
                                     },
                                 },
                             },
-                            id: true
+                            id: true,
                         },
                     },
                 },
@@ -177,18 +177,17 @@ class ServiceUsuario {
         try {
             const musicaSalva = await prisma.musicaSalva.create({
                 data: {
-                    usuario:{
+                    usuario: {
                         connect: {
-                            id: usuario_id
-                        }
+                            id: usuario_id,
+                        },
                     },
-                    musica:{
-                        connect:{
-                            id: musica_id
-                        }
-                    }
-                }
-
+                    musica: {
+                        connect: {
+                            id: musica_id,
+                        },
+                    },
+                },
             });
             return musicaSalva;
         } catch (erro) {
@@ -199,13 +198,12 @@ class ServiceUsuario {
     async removeMusicaSalvaUsuario(usuario_id: string, musica_id: string) {
         try {
             await prisma.musicaSalva.delete({
-                where:{
-                    usuarioId_musicaId:{
+                where: {
+                    usuarioId_musicaId: {
                         usuarioId: usuario_id,
-                        musicaId: musica_id
-                    }
-                }
-
+                        musicaId: musica_id,
+                    },
+                },
             });
         } catch (erro) {
             throw new Error(`Erro ao remover música salva: ${erro}`);
@@ -216,19 +214,18 @@ class ServiceUsuario {
         try {
             const logMusica = await prisma.logMusica.create({
                 data: {
-                    usuario:{
+                    usuario: {
                         connect: {
-                            id: usuario_id
-                        }
+                            id: usuario_id,
+                        },
                     },
-                    musica:{
-                        connect:{
-                            id: musica_id
-                        }
+                    musica: {
+                        connect: {
+                            id: musica_id,
+                        },
                     },
-                    tempo: timestamp
-                }
-
+                    tempo: timestamp,
+                },
             });
             return logMusica;
         } catch (erro) {
@@ -239,10 +236,9 @@ class ServiceUsuario {
     async removeHistoricoUsuario(log_id: string) {
         try {
             await prisma.logMusica.delete({
-                where:{
-                    id:log_id
-                }
-
+                where: {
+                    id: log_id,
+                },
             });
         } catch (erro) {
             throw new Error(`Erro ao remover música do histórico: ${erro}`);
