@@ -18,7 +18,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Retoma a música a partir de seu ID
-router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const music = await serviceMusica.listarMusicaID(req.params.id);
         res.status(success.SUCCESS);
@@ -29,7 +29,7 @@ router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Deleta a música a partir de seu id
-router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const music = await serviceMusica.deletarMusica(req.params.id);
         res.status(success.SUCCESS);
@@ -40,7 +40,7 @@ router.delete('/:id', async (req: Request, res: Response, next: NextFunction) =>
 });
 
 // Atualiza uma música a partir de seu id
-router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.put('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const music_info: Prisma.MusicaUpdateInput = {
             nome: req.body.nome,
@@ -66,6 +66,35 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         const music = await serviceMusica.criarMusica(user_info);
         res.status(success.CREATED);
         res.json(music);
+    } catch (error) {
+        next(error);
+    }
+});
+
+
+//Vincula um artista à uma música 
+router.post('/autoria', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const vinculo = await serviceMusica.vinculaMusicaArtista(req.body.artista,req.body.musica);
+        res.status(success.CREATED);
+        res.json(vinculo);
+    } catch (error) {
+        next(error);
+    }
+});
+
+//Desvincula um artista de uma música 
+router.delete('/autoria', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const vinculo_info: Prisma.AutoriaWhereUniqueInput = {
+            artistaId_musicaId:{
+                artistaId: req.body.artista,
+                musicaId: req.body.musica
+            }
+        };
+        const vinculo = await serviceMusica.desvinculaMusicaArtista(vinculo_info);
+        res.status(success.SUCCESS);
+        res.json(vinculo);
     } catch (error) {
         next(error);
     }
