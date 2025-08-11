@@ -28,19 +28,16 @@ O projeto segue em desenvolvimento na semana 06, a partir da criação das contr
 - [X] Corrigir a arquitetura para aplicar domains
 - [X] Criar instância do express com CORS e utilizando os routers
 - [X] Desenvolver a controller (funções e endpoints) do Usuário
-- [ ] Desenvolver a controller (funções e endpoints) do Artista
+- [X] Desenvolver a controller (funções e endpoints) do Artista
 - [X] Desenvolver a controller (funções e endpoints) da Música
-- [ ] Documentar os endpoints todos da API na documentação do repositório
-- [ ] Atualizar checklists da documentação do repositório
+- [X] Documentar os endpoints todos da API na documentação do repositório
+- [X] Atualizar checklists da documentação do repositório
 
 > [!Important]
 > Para os endpoints da controller, siga o padrão "plural" (especificado no material do Notion dessa semana)
 
 > [!Warning]
 > Não esqueça de utilzar o eslint e o prettier antes de qualquer pull request!
-
-
-
 
 ## Modelagem do Banco 📝
 O banco de dados retrata três entidades principais e suas relações:
@@ -91,6 +88,15 @@ Os logs representam quando um usuário ouviu uma música, guardando o momento no
 
 #### Músicas Salvas
 Representa as músicas favoritadas por um usuário. É uma relação de uma música para um usuário (n->n)
+
+# Documentação da API e Testes de Endpoint
+> A documentação listando todos os endpoints da API e formatos dos objetos requeridos em requisições pode ser encontrada [aqui](https://documenter.getpostman.com/view/47365760/2sB3BDLX3H)
+
+![Documentação da API](public/imgs/preview-docs.png)
+
+> Os testes de Endpoints com client de API Postman podem ser encontrados [aqui](https://www.postman.com/otaviol-8493235/workspace/trainee-ijunior/collection/47365760-c04f666c-fe2d-44d5-b303-288676edb279?action=share&source=copy-link&creator=47365760)
+
+![Testes de Endpoint](public/imgs/preview-test.png)
 
 
 ## Como Contribuir 🚀
