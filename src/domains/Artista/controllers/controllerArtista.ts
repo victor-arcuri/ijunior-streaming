@@ -57,7 +57,7 @@ router
     .delete(async (req: Request, res: Response, next: NextFunction) => {
         try {
             await serviceArtista.deletarArtista(req.params.id)
-            res.status(success.NO_CONTENT)
+            res.status(success.NO_CONTENT).send()
         } catch (err) {
             next(err)
         }
