@@ -1,4 +1,4 @@
-import prisma from '../../database/prismaClient';
+import prisma from '../../../../config/prismaClient.js';
 import bcrypt from 'bcrypt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Prisma } from '@prisma/client';
@@ -16,7 +16,12 @@ class ServiceUsuario {
         };
 
         try {
-            const usuarioCriado = await prisma.usuario.create({ data: usuario });
+            const usuarioCriado = await prisma.usuario.create({
+                data: usuario,
+                omit: {
+                    senha: true,
+                },
+            });
 
             return usuarioCriado;
         } catch (erro) {
@@ -44,15 +49,16 @@ class ServiceUsuario {
     }
 
     // Lista todos os usuários registrados
-    async listarUsuarios() {
+    async listarUsuarios(limit?: number, order?: Prisma.SortOrder) {
         try {
             const usuarios = await prisma.usuario.findMany({
                 orderBy: {
-                    id: 'asc',
+                    id: order ?? 'asc',
                 },
                 omit: {
                     senha: true,
                 },
+                take: typeof limit === 'number' ? limit : undefined,
             });
             return usuarios;
         } catch (erro) {
@@ -105,6 +111,9 @@ class ServiceUsuario {
                 where: {
                     id: id,
                 },
+                omit: {
+                    senha: true,
+                },
                 data: usuarioUpdate,
             });
             return usuario;
@@ -125,6 +134,7 @@ class ServiceUsuario {
                 select: {
                     tempo: true,
                     musica: { select: { nome: true } },
+                    id: true,
                 },
             });
             return historico;
@@ -152,6 +162,7 @@ class ServiceUsuario {
                                     },
                                 },
                             },
+                            id: true,
                         },
                     },
                 },
@@ -159,6 +170,77 @@ class ServiceUsuario {
             return musicasSalvas;
         } catch (erro) {
             throw new Error(`Erro ao listar músicas salvas: ${erro}`);
+        }
+    }
+
+    async salvaMusicaUsuario(usuario_id: string, musica_id: string) {
+        try {
+            const musicaSalva = await prisma.musicaSalva.create({
+                data: {
+                    usuario: {
+                        connect: {
+                            id: usuario_id,
+                        },
+                    },
+                    musica: {
+                        connect: {
+                            id: musica_id,
+                        },
+                    },
+                },
+            });
+            return musicaSalva;
+        } catch (erro) {
+            throw new Error(`Erro ao salvar música: ${erro}`);
+        }
+    }
+
+    async removeMusicaSalvaUsuario(usuario_id: string, musica_id: string) {
+        try {
+            await prisma.musicaSalva.delete({
+                where: {
+                    usuarioId_musicaId: {
+                        usuarioId: usuario_id,
+                        musicaId: musica_id,
+                    },
+                },
+            });
+        } catch (erro) {
+            throw new Error(`Erro ao remover música salva: ${erro}`);
+        }
+    }
+
+    async criaHistoricoUsuario(usuario_id: string, musica_id: string) {
+        try {
+            const logMusica = await prisma.logMusica.create({
+                data: {
+                    usuario: {
+                        connect: {
+                            id: usuario_id,
+                        },
+                    },
+                    musica: {
+                        connect: {
+                            id: musica_id,
+                        },
+                    },
+                },
+            });
+            return logMusica;
+        } catch (erro) {
+            throw new Error(`Erro ao criar log de música: ${erro}`);
+        }
+    }
+
+    async removeHistoricoUsuario(log_id: string) {
+        try {
+            await prisma.logMusica.delete({
+                where: {
+                    id: log_id,
+                },
+            });
+        } catch (erro) {
+            throw new Error(`Erro ao remover música do histórico: ${erro}`);
         }
     }
 }

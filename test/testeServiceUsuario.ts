@@ -1,5 +1,5 @@
 import { Privilegios, Prisma } from '@prisma/client';
-import ServiceUsuario from '../src/services/serviceUsuario';
+import ServiceUsuario from '../src/domains/Usuario/services/serviceUsuario.js';
 
 class TesteDaServiceDeUsuario {
     // Insere um usuario no banco de dados

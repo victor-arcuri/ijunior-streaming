@@ -1,4 +1,4 @@
-import prisma from '../../database/prismaClient';
+import prisma from '../../../../config/prismaClient.js';
 import { Prisma } from '@prisma/client';
 
 class ServiceMusica {
@@ -91,14 +91,37 @@ class ServiceMusica {
     }
 
     // Vincula um artista à musica
-    async vinculaMusicaArtista(data: Prisma.AutoriaCreateInput) {
+    async vinculaMusicaArtista(artistaId: string, musicaId: string) {
         try {
             const autoria = await prisma.autoria.create({
-                data: data,
+                data: {
+                    artista: {
+                        connect: {
+                            id: artistaId,
+                        },
+                    },
+                    musica: {
+                        connect: {
+                            id: musicaId,
+                        },
+                    },
+                },
             });
             return autoria;
         } catch (e) {
             throw new Error(`Erro ao vincular artista à música: ${e}`);
+        }
+    }
+
+    // Desvincula um artista à musica
+    async desvinculaMusicaArtista(where: Prisma.AutoriaWhereUniqueInput) {
+        try {
+            const autoria = await prisma.autoria.delete({
+                where: where,
+            });
+            return autoria;
+        } catch (e) {
+            throw new Error(`Erro ao desvincular artista à música: ${e}`);
         }
     }
 }
