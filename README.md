@@ -45,7 +45,7 @@ O banco de dados retrata três entidades principais e suas relações:
 ![Diagrama representando as relações das tabelas do banco de dados](/public/imgs/db_schema.png)
 
 ### Semana 07
-Em mais uma semana de projeto, agora devemos amadurecer o projeto, desenvolvendo um sistema de autenticação e com JWT, cookies, hash de senhas, além de fazer a tratativa correta dos erros.
+Em mais uma semana de projeto, agora devemos amadurecer a estrutura e segurança da API, desenvolvendo um sistema de autenticação e com JWT, cookies, hash de senhas, além de fazer a tratativa correta dos erros.
 
 #### Objetivos
 - [X] Atualizar documentação com os objetivos da semana
