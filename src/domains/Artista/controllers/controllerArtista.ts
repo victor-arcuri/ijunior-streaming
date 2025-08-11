@@ -55,4 +55,13 @@ router
     })
 
 
+router.get('/id/:id/musicas', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const musicas = await serviceArtista.listaMusicasArtista(req.params.id)
+        res.status(success.SUCCESS).json(musicas)
+    } catch(err) {
+        next(err)
+    }
+})
+
 export default router;
