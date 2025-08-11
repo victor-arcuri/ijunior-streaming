@@ -54,6 +54,14 @@ router
         }
     })
 
+    .delete(async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            await serviceArtista.deletarArtista(req.params.id)
+            res.status(success.NO_CONTENT)
+        } catch (err) {
+            next(err)
+        }
+    })
 
 router.get('/id/:id/musicas', async (req: Request, res: Response, next: NextFunction) => {
     try {
