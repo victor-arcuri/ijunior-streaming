@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import routerUsuario from '../src/domains/Usuario/controllers/controllerUsuario.js';
 import routerArtista from '../src/domains/Artista/controllers/controllerArtista.js';
 import routerMusica from '../src/domains/Musica/controllers/controllerMusica.js';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const options: CorsOptions = {
 };
 
 app.use(cors(options));
+app.use(cookieParser());
 app.use(express.json());
 app.use(
     express.urlencoded({
