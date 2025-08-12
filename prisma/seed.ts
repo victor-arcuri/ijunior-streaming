@@ -29,7 +29,7 @@ async function seedUsuarios(numUsuarios: number) {
             nome: faker.person.fullName(),
             senha: faker.internet.password(),
             foto: faker.image.avatar(),
-            privilegio: faker.helpers.arrayElement(['PADRAO', 'ASSINANTE', 'DEV']),
+            privilegio: faker.helpers.arrayElement(['PADRAO', 'ASSINANTE', 'ADMIN']),
         };
         return usuario;
     });
