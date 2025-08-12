@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import serviceUsuario from '../services/serviceUsuario.js';
 import { Prisma } from '@prisma/client';
-import { success } from '../../../../config/statusCodes.js';
+import statusCodes from '../../../../utils/constants/statusCodes.js';
 
 const router = Router();
 
@@ -20,7 +20,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
         } else {
             result = await serviceUsuario.listarUsuarios(limit, order);
         }
-        res.status(success.SUCCESS);
+        res.status(statusCodes.SUCCESS);
         res.json(result);
     } catch (error) {
         next(error);
@@ -31,7 +31,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 router.get('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await serviceUsuario.listarUsuarioID(req.params.id);
-        res.status(success.SUCCESS);
+        res.status(statusCodes.SUCCESS);
         res.json(user);
     } catch (error) {
         next(error);
@@ -42,7 +42,7 @@ router.get('/id/:id', async (req: Request, res: Response, next: NextFunction) =>
 router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await serviceUsuario.deletarUsuario(req.params.id);
-        res.status(success.SUCCESS);
+        res.status(statusCodes.SUCCESS);
         res.json(user);
     } catch (error) {
         next(error);
@@ -60,7 +60,7 @@ router.put('/id/:id', async (req: Request, res: Response, next: NextFunction) =>
             privilegio: req.body.privilegio,
         };
         const user = await serviceUsuario.atualizaUsuario(req.params.id, user_info);
-        res.status(success.SUCCESS);
+        res.status(statusCodes.SUCCESS);
         res.json(user);
     } catch (error) {
         next(error);
@@ -78,7 +78,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
             privilegio: req.body.privilegio,
         };
         const user = await serviceUsuario.criarUsuario(user_info);
-        res.status(success.CREATED);
+        res.status(statusCodes.CREATED);
         res.json(user);
     } catch (error) {
         next(error);
@@ -89,7 +89,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 router.get('/id/:id/salvas', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const musicas_salvas = await serviceUsuario.listaMusicasSalvasUsuario(req.params.id);
-        res.status(success.SUCCESS);
+        res.status(statusCodes.SUCCESS);
         res.json(musicas_salvas);
     } catch (error) {
         next(error);
@@ -103,7 +103,7 @@ router.post('/id/:id/salvas', async (req: Request, res: Response, next: NextFunc
             req.params.id,
             req.body.musica,
         );
-        res.status(success.SUCCESS);
+        res.status(statusCodes.SUCCESS);
         res.json(musicas_salvas);
     } catch (error) {
         next(error);
@@ -117,7 +117,7 @@ router.delete('/id/:id/salvas', async (req: Request, res: Response, next: NextFu
             req.params.id,
             req.body.musica,
         );
-        res.status(success.SUCCESS);
+        res.status(statusCodes.SUCCESS);
         res.json(musicas_salvas);
     } catch (error) {
         next(error);
@@ -128,7 +128,7 @@ router.delete('/id/:id/salvas', async (req: Request, res: Response, next: NextFu
 router.get('/id/:id/historico', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const historico = await serviceUsuario.listaHistoricoUsuario(req.params.id);
-        res.status(success.SUCCESS);
+        res.status(statusCodes.SUCCESS);
         res.json(historico);
     } catch (error) {
         next(error);
@@ -142,7 +142,7 @@ router.post('/id/:id/historico', async (req: Request, res: Response, next: NextF
             req.params.id,
             req.body.musica,
         );
-        res.status(success.SUCCESS);
+        res.status(statusCodes.SUCCESS);
         res.json(musicas_salvas);
     } catch (error) {
         next(error);
@@ -153,7 +153,7 @@ router.post('/id/:id/historico', async (req: Request, res: Response, next: NextF
 router.delete('/id/:id/historico', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const musicas_salvas = await serviceUsuario.removeHistoricoUsuario(req.body.id);
-        res.status(success.SUCCESS);
+        res.status(statusCodes.SUCCESS);
         res.json(musicas_salvas);
     } catch (error) {
         next(error);
