@@ -1,7 +1,7 @@
 import prisma from '../../../../config/prismaClient.js';
 import bcrypt from 'bcrypt';
 import { Prisma } from '@prisma/client';
-import {QueryError, InvalidParamError} from '../../../../errors'
+import {QueryError, InvalidParamError} from '../../../../errors/index.js'
 
 class ServiceUsuario {
     // Cria novo usuário

@@ -1,11 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
-import prisma from '../config/prismaClient'
-import { LoginError, PermissionError, TokenError } from '../errors';
+import prisma from '../config/prismaClient.js'
+import { LoginError, PermissionError, TokenError } from '../errors/index.js';
 import {compare} from 'bcrypt';
-import statusCodes from '../utils/constants/statusCodes'
+import statusCodes from '../utils/constants/statusCodes.js'
 import { Usuario } from '@prisma/client';
-import { JwtPayload, sign, verify } from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
 import { Privilegios } from '@prisma/client';
+
+import jwt from 'jsonwebtoken';
+
+const { sign, verify } = jwt;
 
 export function isNotLogged(req: Request, res: Response, next: NextFunction){
     try {
@@ -98,14 +102,15 @@ export function logout(req: Request, res: Response, next: NextFunction){
     }
 
 }
-
-export function checkRole(req: Request, res:Response, next: NextFunction, roles: Privilegios[]){
-    try {
-        if (!roles.includes(req.usuario.privilegio)){
-            throw new PermissionError("Usuário não possui permissão para realizar a ação!");
+export function checkRole(roles: Privilegios[]) {
+    return (req: Request, res: Response, next: NextFunction) => {
+        try {
+            if (!roles.includes(req.usuario.privilegio)) {
+                throw new PermissionError("Usuário não possui permissão para realizar a ação!");
+            }
+            next();
+        } catch (error) {
+            next(error);
         }
-        next()
-    } catch (error) {
-        next(error)
-    }
+    };
 }

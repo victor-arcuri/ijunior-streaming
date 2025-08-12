@@ -1,12 +1,12 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import serviceUsuario from '../services/serviceUsuario.js';
-import { Prisma } from '@prisma/client';
+import { Prisma, Privilegios } from '@prisma/client';
 import statusCodes from '../../../../utils/constants/statusCodes.js';
-
+import {checkRole, isNotLogged, login, logout, verifyJWT} from '../../../../middlewares/auth.js'
 const router = Router();
 
 // Lista os usuários (query param de email para retomar o usuário a partir de seu email)
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/', verifyJWT, checkRole([Privilegios.ADMIN]), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const email = req.query.email as string | undefined;
         const limit = req.query.limit ? Number(req.query.limit) : undefined;
@@ -28,7 +28,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Retoma o usuário a partir de seu ID
-router.get('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/id/:id', verifyJWT, checkRole([Privilegios.ADMIN]), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await serviceUsuario.listarUsuarioID(req.params.id);
         res.status(statusCodes.SUCCESS);
@@ -39,7 +39,7 @@ router.get('/id/:id', async (req: Request, res: Response, next: NextFunction) =>
 });
 
 // Deleta o usuário a partir de seu id
-router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/id/:id', verifyJWT, checkRole([Privilegios.ADMIN]), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await serviceUsuario.deletarUsuario(req.params.id);
         res.status(statusCodes.SUCCESS);
@@ -50,7 +50,7 @@ router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction)
 });
 
 // Atualiza um usuário
-router.put('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.put('/id/:id', verifyJWT, checkRole([Privilegios.ADMIN]), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user_info: Prisma.UsuarioUpdateInput = {
             email: req.body.email,
@@ -68,7 +68,7 @@ router.put('/id/:id', async (req: Request, res: Response, next: NextFunction) =>
 });
 
 // Adiciona um novo usuário
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', verifyJWT, checkRole([Privilegios.ADMIN]), async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user_info: Prisma.UsuarioCreateInput = {
             email: req.body.email,
@@ -159,5 +159,11 @@ router.delete('/id/:id/historico', async (req: Request, res: Response, next: Nex
         next(error);
     }
 });
+
+//Login do usuário
+router.post('/login', isNotLogged, login);
+
+//Logout do usuário
+router.post('/logout', verifyJWT, logout);
 
 export default router;
