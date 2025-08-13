@@ -5,9 +5,8 @@ import { InvalidParamError, QueryError } from '../../../../errors/index.js';
 class ServiceMusica {
     // Cria nova música
     async criarMusica(body: Prisma.MusicaCreateInput) {
-
-        if (body.nome == null){
-            throw new InvalidParamError("Nome não informado!")
+        if (body.nome == null) {
+            throw new InvalidParamError('Nome não informado!');
         }
         const musica: Prisma.MusicaCreateInput = {
             nome: body.nome,
@@ -27,15 +26,15 @@ class ServiceMusica {
     // Deleta música com id especifico
     async deletarMusica(id: string) {
         const musicaEncontrada = await prisma.musica.findUnique({
-            where:{
-                id: id
-            }
-        })
-        if (musicaEncontrada == null){
-            throw new QueryError("Id inválido!")
+            where: {
+                id: id,
+            },
+        });
+        if (musicaEncontrada == null) {
+            throw new QueryError('Id inválido!');
         }
-        if (id == null){
-            throw new InvalidParamError("Id não informado!")
+        if (id == null) {
+            throw new InvalidParamError('Id não informado!');
         }
         try {
             await prisma.musica.delete({
@@ -72,15 +71,15 @@ class ServiceMusica {
     // Retoma a música com id especificado
     async listarMusicaID(id: string) {
         const musicaEncontrada = await prisma.musica.findUnique({
-            where:{
-                id: id
-            }
-        })
-        if (musicaEncontrada == null){
-            throw new QueryError("Id inválido!")
+            where: {
+                id: id,
+            },
+        });
+        if (musicaEncontrada == null) {
+            throw new QueryError('Id inválido!');
         }
-        if (id == null){
-            throw new InvalidParamError("Id não informado!")
+        if (id == null) {
+            throw new InvalidParamError('Id não informado!');
         }
         try {
             const musica = await prisma.musica.findUnique({
@@ -105,15 +104,15 @@ class ServiceMusica {
     async atualizaMusica(id: string, body: Prisma.MusicaUpdateInput) {
         const musicaUpdate: Prisma.MusicaUpdateInput = { ...body };
         const musicaEncontrada = await prisma.musica.findUnique({
-            where:{
-                id: id
-            }
-        })
-        if (musicaEncontrada == null){
-            throw new QueryError("Id inválido!")
+            where: {
+                id: id,
+            },
+        });
+        if (musicaEncontrada == null) {
+            throw new QueryError('Id inválido!');
         }
-        if (id == null){
-            throw new InvalidParamError("Id não informado!")
+        if (id == null) {
+            throw new InvalidParamError('Id não informado!');
         }
         try {
             const musica = await prisma.musica.update({
@@ -131,26 +130,26 @@ class ServiceMusica {
     // Vincula um artista à musica
     async vinculaMusicaArtista(artistaId: string, musicaId: string) {
         const musicaEncontrada = await prisma.musica.findUnique({
-            where:{
-                id: musicaId
-            }
-        })
+            where: {
+                id: musicaId,
+            },
+        });
         const artistaEncontrado = await prisma.artista.findUnique({
-            where:{
-                id: artistaId
-            }
-        })
-        if (musicaEncontrada == null){
-            throw new QueryError("Id da música inválido!")
+            where: {
+                id: artistaId,
+            },
+        });
+        if (musicaEncontrada == null) {
+            throw new QueryError('Id da música inválido!');
         }
-        if (artistaEncontrado == null){
-            throw new QueryError("Id do artista inválido!")
+        if (artistaEncontrado == null) {
+            throw new QueryError('Id do artista inválido!');
         }
-        if (musicaId == null){
-            throw new InvalidParamError("Id da música não informado!")
+        if (musicaId == null) {
+            throw new InvalidParamError('Id da música não informado!');
         }
-        if (artistaId == null){
-            throw new InvalidParamError("Id do artista não informado!")
+        if (artistaId == null) {
+            throw new InvalidParamError('Id do artista não informado!');
         }
         try {
             const autoria = await prisma.autoria.create({
@@ -176,26 +175,26 @@ class ServiceMusica {
     // Desvincula um artista à musica
     async desvinculaMusicaArtista(where: Prisma.AutoriaWhereUniqueInput) {
         const musicaEncontrada = await prisma.musica.findUnique({
-            where:{
-                id: where.artistaId_musicaId?.musicaId
-            }
-        })
+            where: {
+                id: where.artistaId_musicaId?.musicaId,
+            },
+        });
         const artistaEncontrado = await prisma.artista.findUnique({
-            where:{
-                id: where.artistaId_musicaId?.artistaId
-            }
-        })
-        if (musicaEncontrada == null){
-            throw new QueryError("Id da música inválido!")
+            where: {
+                id: where.artistaId_musicaId?.artistaId,
+            },
+        });
+        if (musicaEncontrada == null) {
+            throw new QueryError('Id da música inválido!');
         }
-        if (artistaEncontrado == null){
-            throw new QueryError("Id do artista inválido!")
+        if (artistaEncontrado == null) {
+            throw new QueryError('Id do artista inválido!');
         }
-        if ( where.artistaId_musicaId?.musicaId == null){
-            throw new InvalidParamError("Id da música não informado!")
+        if (where.artistaId_musicaId?.musicaId == null) {
+            throw new InvalidParamError('Id da música não informado!');
         }
-        if (where.artistaId_musicaId?.artistaId == null){
-            throw new InvalidParamError("Id do artista não informado!")
+        if (where.artistaId_musicaId?.artistaId == null) {
+            throw new InvalidParamError('Id do artista não informado!');
         }
         try {
             const autoria = await prisma.autoria.delete({

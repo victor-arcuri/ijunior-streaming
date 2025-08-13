@@ -7,6 +7,11 @@ const router = Router();
 router.post('/login', isNotLogged, login);
 
 // Logout do usuário
-router.post('/logout', verifyJWT, checkRole([Privilegios.PADRAO, Privilegios.ASSINANTE, Privilegios.ADMIN]), logout);
+router.post(
+    '/logout',
+    verifyJWT,
+    checkRole([Privilegios.PADRAO, Privilegios.ASSINANTE, Privilegios.ADMIN]),
+    logout,
+);
 
 export default router;

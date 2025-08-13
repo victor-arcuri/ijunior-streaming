@@ -6,7 +6,7 @@ import statusCodes from '../../../../utils/constants/statusCodes.js';
 const router = Router();
 
 // Registra nova conta como usuário
-router.post('/create', async (req: Request, res: Response, next: NextFunction)=>{
+router.post('/create', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user_info: Prisma.UsuarioCreateInput = {
             email: req.body.email,

@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import prisma from '../config/prismaClient.js'
+import prisma from '../config/prismaClient.js';
 import { LoginError, PermissionError, TokenError } from '../errors/index.js';
-import {compare} from 'bcrypt';
-import statusCodes from '../utils/constants/statusCodes.js'
+import { compare } from 'bcrypt';
+import statusCodes from '../utils/constants/statusCodes.js';
 import { Usuario } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';
 import { Privilegios } from '@prisma/client';
@@ -11,16 +11,16 @@ import jwt from 'jsonwebtoken';
 
 const { sign, verify } = jwt;
 
-export function isNotLogged(req: Request, res: Response, next: NextFunction){
+export function isNotLogged(req: Request, res: Response, next: NextFunction) {
     try {
         const token = cookieExtractor(req);
-        if (token){
-            const decoded = verify(token, process.env.SECRET_KEY || "") as JwtPayload;
+        if (token) {
+            const decoded = verify(token, process.env.SECRET_KEY || '') as JwtPayload;
             req.usuario = decoded.usuario;
         }
 
-        if (req.usuario != null){
-            throw new LoginError("Usuário já está logado!");
+        if (req.usuario != null) {
+            throw new LoginError('Usuário já está logado!');
         }
         next();
     } catch (error) {
@@ -28,38 +28,40 @@ export function isNotLogged(req: Request, res: Response, next: NextFunction){
     }
 }
 
-function generateJWT(user: Usuario, res: Response){
+function generateJWT(user: Usuario, res: Response) {
     const body = {
         id: user.id,
         email: user.email,
         privilegio: user.privilegio,
-        nome: user.nome
-    }
-    const token = sign({usuario:body}, process.env.SECRET_KEY || "", {expiresIn: Number(process.env.JWT_EXPIRATION)});
-    res.cookie("jwt", token, {
+        nome: user.nome,
+    };
+    const token = sign({ usuario: body }, process.env.SECRET_KEY || '', {
+        expiresIn: Number(process.env.JWT_EXPIRATION),
+    });
+    res.cookie('jwt', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== 'development'
+        secure: process.env.NODE_ENV !== 'development',
     });
 }
 
-function cookieExtractor(req: Request){
+function cookieExtractor(req: Request) {
     let token = null;
-    if (req.cookies){
-        token = req.cookies["jwt"]
+    if (req.cookies) {
+        token = req.cookies['jwt'];
     }
-    return token
+    return token;
 }
 
-export function verifyJWT(req: Request, res: Response, next: NextFunction){
+export function verifyJWT(req: Request, res: Response, next: NextFunction) {
     try {
         const token = cookieExtractor(req);
-        if (token){
-            const decoded = verify(token, process.env.SECRET_KEY || "") as JwtPayload;
+        if (token) {
+            const decoded = verify(token, process.env.SECRET_KEY || '') as JwtPayload;
             req.usuario = decoded.usuario;
         }
 
-        if (req.usuario == null){
-            throw new TokenError("Você precisa estar logado para realizar essa ação!");
+        if (req.usuario == null) {
+            throw new TokenError('Você precisa estar logado para realizar essa ação!');
         }
         next();
     } catch (error) {
@@ -67,38 +69,36 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction){
     }
 }
 
-export async function login(req: Request, res: Response, next: NextFunction){
+export async function login(req: Request, res: Response, next: NextFunction) {
     try {
         const user = await prisma.usuario.findUnique({
             where: {
-                email: req.body.email
-            }
-        })
+                email: req.body.email,
+            },
+        });
 
-        if (!user){
-            throw new PermissionError("Email e/ou senha incorretos!");
+        if (!user) {
+            throw new PermissionError('Email e/ou senha incorretos!');
         }
-        console.log(req.body.senha, " ", user.senha)
+        console.log(req.body.senha, ' ', user.senha);
         const match = await compare(req.body.senha, user.senha);
 
-        if (!match){
-            throw new PermissionError("Email e/ou senha incorretos!");
+        if (!match) {
+            throw new PermissionError('Email e/ou senha incorretos!');
         }
         generateJWT(user, res);
         res.status(statusCodes.SUCCESS);
-        res.json("Login realizado com sucesso!");
-    } catch (error){
+        res.json('Login realizado com sucesso!');
+    } catch (error) {
         next(error);
     }
-
 }
 
-export function logout(req: Request, res: Response, next: NextFunction){
+export function logout(req: Request, res: Response, next: NextFunction) {
     try {
-        res.clearCookie("jwt");
-        res.status(statusCodes.SUCCESS).json("Logout realizado com sucesso!");
+        res.clearCookie('jwt');
+        res.status(statusCodes.SUCCESS).json('Logout realizado com sucesso!');
         next();
-        
     } catch (error) {
         next(error);
     }
@@ -108,7 +108,7 @@ export function checkRole(roles: Privilegios[]) {
     return (req: Request, res: Response, next: NextFunction) => {
         try {
             if (!roles.includes(req.usuario.privilegio)) {
-                throw new PermissionError("Usuário não possui permissão para realizar a ação!");
+                throw new PermissionError('Usuário não possui permissão para realizar a ação!');
             }
             next();
         } catch (error) {
