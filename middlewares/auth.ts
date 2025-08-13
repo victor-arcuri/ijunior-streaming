@@ -22,6 +22,7 @@ export function isNotLogged(req: Request, res: Response, next: NextFunction) {
             //throw new LoginError('Usuário já está logado!');
 
             //Aplicar tratativa correta de erros
+            return
         }
         next();
     } catch (error) {
@@ -65,6 +66,7 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction) {
             //throw new TokenError('Você precisa estar logado para realizar essa ação!');
 
             //Aplicar tratativa correta de erros
+            return
         }
         next();
     } catch (error) {
@@ -84,6 +86,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
             //throw new PermissionError('Email e/ou senha incorretos!');
 
             //Aplicar tratativa correta de erros
+            return
         }
         console.log(req.body.senha, ' ', user.senha);
         const match = await compare(req.body.senha, user.senha);
@@ -92,6 +95,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
             //throw new PermissionError('Email e/ou senha incorretos!');
 
             //Aplicar tratativa correta de erros
+            return
         }
         generateJWT(user, res);
         res.status(statusCodes.SUCCESS);
@@ -118,6 +122,7 @@ export function checkRole(roles: Privilegios[]) {
                 //throw new PermissionError('Usuário não possui permissão para realizar a ação!');
 
                 //Aplicar tratativa correta de erros
+                return
             }
             next();
         } catch (error) {
