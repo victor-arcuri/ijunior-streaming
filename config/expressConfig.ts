@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 import cors, { CorsOptions } from 'cors';
 import dotenv from 'dotenv';
-import routerUsuario from '../src/domains/Usuario/controllers/controllerUsuario.js';
+import routerUsuario from '../src/domains/Usuario/controllers/index.js';
 import routerArtista from '../src/domains/Artista/controllers/controllerArtista.js';
 import routerMusica from '../src/domains/Musica/controllers/controllerMusica.js';
 import cookieParser from 'cookie-parser';
@@ -23,6 +23,6 @@ app.use(
         extended: true,
     }),
 );
-app.use('/api/usuarios', routerUsuario);
+app.use('/api/users', routerUsuario);
 app.use('/api/artistas', routerArtista);
 app.use('/api/musicas', routerMusica);
