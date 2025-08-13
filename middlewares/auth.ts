@@ -78,13 +78,15 @@ export async function login(req: Request, res: Response, next: NextFunction){
         if (!user){
             throw new PermissionError("Email e/ou senha incorretos!");
         }
-        const match = compare(req.body.senha, user.senha);
+        console.log(req.body.senha, " ", user.senha)
+        const match = await compare(req.body.senha, user.senha);
 
         if (!match){
             throw new PermissionError("Email e/ou senha incorretos!");
         }
         generateJWT(user, res);
-        res.status(statusCodes.NO_CONTENT).json("Login realizado com sucesso!");
+        res.status(statusCodes.SUCCESS);
+        res.json("Login realizado com sucesso!");
     } catch (error){
         next(error);
     }
@@ -94,14 +96,14 @@ export async function login(req: Request, res: Response, next: NextFunction){
 export function logout(req: Request, res: Response, next: NextFunction){
     try {
         res.clearCookie("jwt");
-        res.status(statusCodes.NO_CONTENT).json("Logout realizado com sucesso!");
+        res.status(statusCodes.SUCCESS).json("Logout realizado com sucesso!");
         next();
         
     } catch (error) {
         next(error);
     }
-
 }
+
 export function checkRole(roles: Privilegios[]) {
     return (req: Request, res: Response, next: NextFunction) => {
         try {
