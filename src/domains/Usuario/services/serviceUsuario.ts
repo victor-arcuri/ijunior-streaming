@@ -1,8 +1,7 @@
 import prisma from '../../../../config/prismaClient.js';
-import bcrypt from 'bcrypt';
 import { Prisma } from '@prisma/client';
 import {QueryError, InvalidParamError} from '../../../../errors/index.js'
-
+import {encryptPassword} from '../../../../utils/functions/encryptPassword.js'
 class ServiceUsuario {
     // Cria novo usuário
     async criarUsuario(body: Prisma.UsuarioCreateInput) {
@@ -26,7 +25,7 @@ class ServiceUsuario {
             throw new InvalidParamError("Nome não informado!")
         }
 
-        const hashSenha = await bcrypt.hash(body.senha, 10);
+        const hashSenha = await encryptPassword(body.senha);
         const usuario: Prisma.UsuarioCreateInput = {
             nome: body.nome,
             email: body.email,
@@ -167,7 +166,7 @@ class ServiceUsuario {
         const usuarioUpdate: Prisma.UsuarioUpdateInput = { ...body };
 
         if (typeof body.senha === 'string') {
-            usuarioUpdate.senha = await bcrypt.hash(body.senha, 10);
+            usuarioUpdate.senha = await encryptPassword(usuarioUpdate.senha as string)
         }
         try {
             const usuario = await prisma.usuario.update({
