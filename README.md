@@ -51,6 +51,7 @@ Em mais uma semana de projeto, agora devemos amadurecer a estrutura e segurança
 - [X] Atualizar documentação com os objetivos da semana
 - [] Reorganizar a arquitetura do projeto para se adequar ao pradrão iJunior
 - [] Criar os tipos (namespaces e interfaces) customizados referentes ao .env
+- [] Adicionar um sistema de tratativa de erros e validação de dados
 - [] Criar middlewares de autenticação (login, logout, checagem se o usuário já está logado, criar cookie com JWT, validar cookie com JWT, verificar nível de acesso do usuário, etc)...
 - [] Criar endpoints referentes às histórias de usuário (usuário comum poder manipular suas informaçõs, histórico e músicas salvas; admin poder manipular usuários, artistas e músicas; etc..)
 - [] Atualizar documentação da API com os novos endpoints
