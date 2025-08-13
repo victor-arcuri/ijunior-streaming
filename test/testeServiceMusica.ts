@@ -28,19 +28,7 @@ class TesteDaServiceDeMusica {
     }
 
     async test_vincularArtista() {
-        const autoria_data: Prisma.AutoriaCreateInput = {
-            artista: {
-                connect: {
-                    id: this.artistaId,
-                },
-            },
-            musica: {
-                connect: {
-                    id: this.musicaId,
-                },
-            },
-        };
-        const autoria = await ServiceMusica.vinculaMusicaArtista(autoria_data);
+        const autoria = await ServiceMusica.vinculaMusicaArtista(this.musicaId, this.artistaId);
         console.log('Artista e música vinculados:', autoria);
         return autoria;
     }
