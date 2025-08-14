@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import prisma from '../config/prismaClient.js';
+import prisma from '../../config/prismaClient.js';
 import { compare } from 'bcrypt';
-import statusCodes from '../utils/constants/statusCodes.js';
+import statusCodes from '../../utils/constants/statusCodes.js';
 import { Usuario } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';
 import { Privilegios } from '@prisma/client';
