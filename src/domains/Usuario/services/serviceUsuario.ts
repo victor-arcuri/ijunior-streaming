@@ -2,6 +2,31 @@ import prisma from '../../../../config/prismaClient.js';
 import bcrypt from 'bcrypt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Prisma } from '@prisma/client';
+import { z } from 'zod';
+
+const UsuarioCreate = z.object({
+    email: z.email('Email inválido'),
+    nome: z.string('Nome inválido'),
+    privilegio: z.enum(['PADRAO', 'ADMIN'], 'Privilégio inválido').optional(),
+    senha: z.string().min(8, 'Senha tem que ter no mínimo 8 caracteres'),
+    foto: z.string('Foto inválida').optional(),
+});
+
+const UsuarioUpdate = z
+    .object({
+        email: z.email('Email inválido').optional(),
+        nome: z.string('Nome inválido').optional(),
+        privilegio: z.enum(['PADRAO', 'ADMIN'], 'Privilégio inválido').optional(),
+        senha: z.string().min(8, 'Senha tem que ter no mínimo 8 caracteres').optional(),
+        foto: z.string('Foto inválida').optional(),
+    })
+    .refine(
+        (data) =>
+            Object.values(data).some((val) => val !== undefined && val !== null && val !== ''),
+        {
+            message: 'Update de usuário inválido',
+        },
+    );
 
 class ServiceUsuario {
     // Cria novo usuário
