@@ -3,6 +3,8 @@ import { ZodError } from 'zod';
 import { Prisma } from '@prisma/client';
 import { TokenError } from '../../errors/TokenError.js';
 import statusCodes from '../../utils/constants/statusCodes.js';
+import { LoginError } from '../../errors/LoginError.js';
+import { PermissionError } from '../../errors/PermissionError.js';
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     console.error(err);
@@ -26,6 +28,14 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
     if (err instanceof TokenError) {
         return res.status(statusCodes.BAD_REQUEST).json({ error: err.message });
+    }
+
+    if (err instanceof LoginError) {
+        return res.status(statusCodes.FORBIDDEN).json({ error: err.message });
+    }
+
+    if (err instanceof PermissionError) {
+        return res.status(statusCodes.UNAUTHORIZED).json({ error: err.message });
     }
 
     res.status(501).json({ error: 'Internal Server Error' });
