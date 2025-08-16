@@ -1,4 +1,4 @@
-import {NotAuthorizedError} from './NotAuthorizedError';
+import {NotAuthorizedError} from './NotAuthorizedError.js';
 
 export class PermissionError extends NotAuthorizedError {
     constructor(msg: string) {
