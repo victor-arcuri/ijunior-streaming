@@ -1,5 +1,26 @@
 import prisma from '../../../../config/prismaClient.js';
 import { Prisma } from '@prisma/client';
+import { z } from 'zod';
+
+const MusicaCreate = z.object({
+    nome: z.string(),
+    genero: z.string().optional(),
+    album: z.string().optional(),
+});
+
+const MusicaUpdate = z
+    .object({
+        nome: z.string().optional(),
+        genero: z.string().optional(),
+        album: z.string().optional(),
+    })
+    .refine(
+        (data) =>
+            Object.values(data).some((val) => val !== undefined && val !== null && val !== ''),
+        {
+            message: 'Update de música inválido',
+        },
+    );
 
 class ServiceMusica {
     // Cria nova música
