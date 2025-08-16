@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { Prisma } from '@prisma/client';
 import serviceArtista from '../services/serviceArtista.js';
 import statusCodes from '../../../../utils/constants/statusCodes.js';
+import { validateId } from '../../../middleware/validateId.js';
 
 const router = Router();
 
@@ -30,7 +31,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
 router
     .route('/id/:id')
-    .get(async (req: Request, res: Response, next: NextFunction) => {
+    .get(validateId, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const artista = await serviceArtista.listarArtistaID(req.params.id);
             res.status(statusCodes.SUCCESS).json(artista);
@@ -39,7 +40,7 @@ router
         }
     })
 
-    .put(async (req: Request, res: Response, next: NextFunction) => {
+    .put(validateId, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const artista: Prisma.ArtistaUpdateInput = {
                 nome: req.body.nome,
@@ -53,7 +54,7 @@ router
         }
     })
 
-    .delete(async (req: Request, res: Response, next: NextFunction) => {
+    .delete(validateId, async (req: Request, res: Response, next: NextFunction) => {
         try {
             await serviceArtista.deletarArtista(req.params.id);
             res.status(statusCodes.NO_CONTENT).send();
@@ -62,13 +63,17 @@ router
         }
     });
 
-router.get('/id/:id/musicas', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const musicas = await serviceArtista.listaMusicasArtista(req.params.id);
-        res.status(statusCodes.SUCCESS).json(musicas);
-    } catch (err) {
-        next(err);
-    }
-});
+router.get(
+    '/id/:id/musicas',
+    validateId,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const musicas = await serviceArtista.listaMusicasArtista(req.params.id);
+            res.status(statusCodes.SUCCESS).json(musicas);
+        } catch (err) {
+            next(err);
+        }
+    },
+);
 
 export default router;
