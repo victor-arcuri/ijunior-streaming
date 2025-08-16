@@ -38,5 +38,9 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
         return res.status(statusCodes.UNAUTHORIZED).json({ error: err.message });
     }
 
+    if (err instanceof SyntaxError) {
+        return res.status(400).json({ error: 'Json inválido' })
+    }
+
     res.status(501).json({ error: 'Internal Server Error' });
 };
