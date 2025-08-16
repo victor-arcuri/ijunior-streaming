@@ -2,7 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import serviceUsuario from '../services/serviceUsuario.js';
 import { Prisma } from '@prisma/client';
 import statusCodes from '../../../../utils/constants/statusCodes.js';
-import { validateId } from '../../../middleware/validateId.js';
+import { validateId } from '../../../middlewares/validateId.js';
 
 const router = Router();
 
