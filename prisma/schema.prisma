@@ -12,8 +12,7 @@ datasource db {
 
 enum Privilegios {
   PADRAO
-  ASSINANTE
-  DEV
+  ADMIN
 }
 
 model Usuario {
