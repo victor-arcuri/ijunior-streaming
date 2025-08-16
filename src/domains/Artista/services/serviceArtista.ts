@@ -1,5 +1,26 @@
 import prisma from '../../../../config/prismaClient.js';
 import { Prisma } from '@prisma/client';
+import { z } from 'zod';
+
+const ArtistaCreate = z.object({
+    nome: z.string(),
+    streams: z.number().optional(),
+    foto: z.string().optional(),
+});
+
+const ArtistaUpdate = z
+    .object({
+        nome: z.string(),
+        streams: z.number().optional(),
+        foto: z.string().optional(),
+    })
+    .refine(
+        (data) =>
+            Object.values(data).some((val) => val !== undefined && val !== null && val !== ''),
+        {
+            message: 'Update de artista inválido',
+        },
+    );
 
 class ServiceArtista {
     // Cria novo artista
