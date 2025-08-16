@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import routerUsuario from '../src/domains/Usuario/controllers/controllerUsuario.js';
 import routerArtista from '../src/domains/Artista/controllers/controllerArtista.js';
 import routerMusica from '../src/domains/Musica/controllers/controllerMusica.js';
+import { errorHandler } from '../src/middleware/errorHandler.js';
 
 dotenv.config();
 
@@ -26,3 +27,5 @@ app.use(
 app.use('/api/usuarios', routerUsuario);
 app.use('/api/artistas', routerArtista);
 app.use('/api/musicas', routerMusica);
+
+app.use(errorHandler);
