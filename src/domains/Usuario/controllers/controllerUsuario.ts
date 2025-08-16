@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import serviceUsuario from '../services/serviceUsuario.js';
 import { Prisma } from '@prisma/client';
 import statusCodes from '../../../../utils/constants/statusCodes.js';
+import { validateId } from '../../../middleware/validateId.js';
 
 const router = Router();
 
@@ -28,7 +29,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Retoma o usuário a partir de seu ID
-router.get('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/id/:id', validateId,async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await serviceUsuario.listarUsuarioID(req.params.id);
         res.status(statusCodes.SUCCESS);
@@ -39,7 +40,7 @@ router.get('/id/:id', async (req: Request, res: Response, next: NextFunction) =>
 });
 
 // Deleta o usuário a partir de seu id
-router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/id/:id', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await serviceUsuario.deletarUsuario(req.params.id);
         res.status(statusCodes.SUCCESS);
@@ -50,7 +51,7 @@ router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction)
 });
 
 // Atualiza um usuário
-router.put('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.put('/id/:id', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user_info: Prisma.UsuarioUpdateInput = {
             email: req.body.email,
@@ -86,7 +87,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Lista músicas salvas do usuário
-router.get('/id/:id/salvas', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/id/:id/salvas', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const musicas_salvas = await serviceUsuario.listaMusicasSalvasUsuario(req.params.id);
         res.status(statusCodes.SUCCESS);
@@ -97,7 +98,7 @@ router.get('/id/:id/salvas', async (req: Request, res: Response, next: NextFunct
 });
 
 // Adiciona músicas salvas ao usuário
-router.post('/id/:id/salvas', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/id/:id/salvas', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const musicas_salvas = await serviceUsuario.salvaMusicaUsuario(
             req.params.id,
@@ -111,7 +112,7 @@ router.post('/id/:id/salvas', async (req: Request, res: Response, next: NextFunc
 });
 
 // Remove música salva do usuário
-router.delete('/id/:id/salvas', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/id/:id/salvas', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const musicas_salvas = await serviceUsuario.removeMusicaSalvaUsuario(
             req.params.id,
@@ -125,7 +126,7 @@ router.delete('/id/:id/salvas', async (req: Request, res: Response, next: NextFu
 });
 
 // Lista histórico do usuário
-router.get('/id/:id/historico', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/id/:id/historico', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const historico = await serviceUsuario.listaHistoricoUsuario(req.params.id);
         res.status(statusCodes.SUCCESS);
@@ -136,7 +137,7 @@ router.get('/id/:id/historico', async (req: Request, res: Response, next: NextFu
 });
 
 // Adiciona música ao histórico do usuário
-router.post('/id/:id/historico', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/id/:id/historico', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const musicas_salvas = await serviceUsuario.criaHistoricoUsuario(
             req.params.id,
@@ -150,7 +151,7 @@ router.post('/id/:id/historico', async (req: Request, res: Response, next: NextF
 });
 
 // Remove música do histórico do usuário
-router.delete('/id/:id/historico', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/id/:id/historico', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const musicas_salvas = await serviceUsuario.removeHistoricoUsuario(req.body.id);
         res.status(statusCodes.SUCCESS);
