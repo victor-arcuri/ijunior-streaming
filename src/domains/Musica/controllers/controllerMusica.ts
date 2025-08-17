@@ -1,104 +1,158 @@
 import { Request, Response } from 'express';
 import MusicService from '../services/serviceMusica';
 import statusCodes from '../../../../config/statusCodes';
+import prisma from '../../../../config/prismaClient';
+import { verifyJWT, checkRole } from '../../../../middlewares/auth';
+import { Privilegios } from '@prisma/client';
 
 export default class MusicController {
-  constructor(private service = new MusicService()) {}
+    constructor(private service = new MusicService()) {}
 
-  // Lista todas as músicas em ordem alfabética
-  async listarTodas(req: Request, res: Response) {
-    try {
-      const musicas = await this.service.listarTodasOrdenadas();
-      res.status(statusCodes.SUCCESS).json(musicas);
-    } catch (error) {
-      console.error('Erro ao listar músicas:', error);
-      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
-        mensagem: 'Erro ao buscar músicas'
-      });
+    // Verifica autenticação e permissões
+    private verifyAccess(roles: Privilegios[]) {
+        return [verifyJWT, checkRole(roles)];
     }
-  }
 
-  // Busca uma música específica por ID
-  async buscarPorId(req: Request, res: Response) {
-    try {
-      const musica = await this.service.buscarPorId(req.params.id);
-      if (!musica) return res.status(statusCodes.NOT_FOUND).json({ mensagem: 'Música não encontrada' });
-      res.status(statusCodes.SUCCESS).json(musica);
-    } catch (error) {
-      console.error('Erro ao buscar música:', error);
-      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
-        mensagem: 'Erro ao buscar música'
-      });
+    // Lista todas músicas (ordem A-Z)
+    async listarTodas(req: Request, res: Response) {
+        try {
+            const musicas = await this.service.listarMusicas();
+            res.status(statusCodes.SUCCESS).json(musicas);
+        } catch (error) {
+            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+                error: 'Falha ao buscar músicas'
+            });
+        }
     }
-  }
 
-  // Marca música como ouvida pelo usuário
-  async marcarComoOuvida(req: Request, res: Response) {
-    try {
-      // @ts-ignore
-      await this.service.marcarComoOuvida(req.user.id, req.params.musicaId);
-      res.status(statusCodes.SUCCESS).json({ mensagem: 'Música adicionada ao histórico' });
-    } catch (error) {
-      console.error('Erro ao marcar música:', error);
-      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
-        mensagem: 'Erro ao marcar música'
-      });
+    // Busca música específica
+    async buscarPorId(req: Request, res: Response) {
+        try {
+            const musica = await this.service.listarMusicaID(req.params.id);
+            musica 
+                ? res.status(statusCodes.SUCCESS).json(musica)
+                : res.status(statusCodes.NOT_FOUND).json({ error: 'Música não encontrada' });
+        } catch (error) {
+            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+                error: 'Falha ao buscar música'
+            });
+        }
     }
-  }
 
-  // Cria nova música (apenas admin)
-  async criarMusica(req: Request, res: Response) {
-    try {
-      const novaMusica = await this.service.criarMusica(req.body);
-      res.status(statusCodes.CREATED).json({
-        mensagem: 'Música criada',
-        dados: novaMusica
-      });
-    } catch (error) {
-      console.error('Erro ao criar música:', error);
-      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
-        mensagem: 'Erro ao criar música'
-      });
+    // Registra música ouvida pelo usuário
+    async marcarComoOuvida(req: Request, res: Response) {
+        try {
+            await prisma.musicaOuvida.create({
+                data: {
+                    usuarioId: req.user.id,
+                    musicaId: req.params.musicaId,
+                    data: new Date()
+                }
+            });
+            res.status(statusCodes.SUCCESS).json({ message: 'Música registrada!' });
+        } catch (error) {
+            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+                error: 'Falha ao registrar música'
+            });
+        }
     }
-  }
 
-  // Lista músicas ouvidas pelo usuário
-  async listarOuvidas(req: Request, res: Response) {
-    try {
-      // @ts-ignore
-      const musicas = await this.service.listarOuvidasPorUsuario(req.user.id);
-      res.status(statusCodes.SUCCESS).json(musicas);
-    } catch (error) {
-      console.error('Erro ao listar histórico:', error);
-      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
-        mensagem: 'Erro ao carregar histórico'
-      });
-    }
-  }
+    // Cria nova música (admin)
+    criar = [
+        ...this.verifyAccess(['ADMIN']),
+        async (req: Request, res: Response) => {
+            try {
+                const musica = await this.service.criarMusica(req.body);
+                res.status(statusCodes.CREATED).json(musica);
+            } catch (error) {
+                res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+                    error: 'Falha ao criar música'
+                });
+            }
+        }
+    ]
 
-  // Atualiza música (apenas admin)
-  async atualizarMusica(req: Request, res: Response) {
-    try {
-      const musicaAtualizada = await this.service.atualizarMusica(req.params.id, req.body);
-      res.status(statusCodes.SUCCESS).json(musicaAtualizada);
-    } catch (error) {
-      console.error('Erro ao atualizar música:', error);
-      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
-        mensagem: 'Erro ao atualizar música'
-      });
-    }
-  }
+    // Atualiza música (admin)
+    atualizar = [
+        ...this.verifyAccess(['ADMIN']),
+        async (req: Request, res: Response) => {
+            try {
+                const musica = await this.service.atualizaMusica(req.params.id, req.body);
+                res.status(statusCodes.SUCCESS).json(musica);
+            } catch (error) {
+                res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+                    error: 'Falha ao atualizar música'
+                });
+            }
+        }
+    ]
 
-  // Remove música (apenas admin)
-  async removerMusica(req: Request, res: Response) {
-    try {
-      await this.service.removerMusica(req.params.id);
-      res.status(statusCodes.NO_CONTENT).send();
-    } catch (error) {
-      console.error('Erro ao remover música:', error);
-      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
-        mensagem: 'Erro ao remover música'
-      });
+    // Remove música (admin)
+    remover = [
+        ...this.verifyAccess(['ADMIN']),
+        async (req: Request, res: Response) => {
+            try {
+                await this.service.deletarMusica(req.params.id);
+                res.status(statusCodes.NO_CONTENT).send();
+            } catch (error) {
+                res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+                    error: 'Falha ao remover música'
+                });
+            }
+        }
+    ]
+
+    // Lista músicas ouvidas pelo usuário
+    async historico(req: Request, res: Response) {
+        try {
+            const historico = await prisma.musicaOuvida.findMany({
+                where: { usuarioId: req.user.id },
+                include: { musica: true },
+                orderBy: { data: 'desc' }
+            });
+            res.status(statusCodes.SUCCESS).json(historico);
+        } catch (error) {
+            res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+                error: 'Falha ao buscar histórico'
+            });
+        }
     }
-  }
+
+    // Vincula artista à música (admin)
+    vincularArtista = [
+        ...this.verifyAccess(['ADMIN']),
+        async (req: Request, res: Response) => {
+            try {
+                const vinculo = await this.service.vinculaMusicaArtista(
+                    req.params.artistaId, 
+                    req.params.musicaId
+                );
+                res.status(statusCodes.SUCCESS).json(vinculo);
+            } catch (error) {
+                res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+                    error: 'Falha ao vincular artista'
+                });
+            }
+        }
+    ]
+
+    // Desvincula artista (admin)
+    desvincularArtista = [
+        ...this.verifyAccess(['ADMIN']),
+        async (req: Request, res: Response) => {
+            try {
+                const resultado = await this.service.desvinculaMusicaArtista({
+                    artistaId_musicaId: {
+                        artistaId: req.params.artistaId,
+                        musicaId: req.params.musicaId
+                    }
+                });
+                res.status(statusCodes.SUCCESS).json(resultado);
+            } catch (error) {
+                res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+                    error: 'Falha ao desvincular artista'
+                });
+            }
+        }
+    ]
 }
