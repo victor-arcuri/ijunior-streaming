@@ -1,101 +1,104 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import serviceMusica from '../services/serviceMusica.js';
-import { Prisma } from '@prisma/client';
-import statusCodes from '../../../../utils/constants/statusCodes.js';
+import { Request, Response } from 'express';
+import MusicService from '../services/serviceMusica';
+import statusCodes from '../../../../config/statusCodes';
 
-const router = Router();
+export default class MusicController {
+  constructor(private service = new MusicService()) {}
 
-// Lista as músicas
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+  // Lista todas as músicas em ordem alfabética
+  async listarTodas(req: Request, res: Response) {
     try {
-        const music_list = await serviceMusica.listarMusicas();
-        res.status(statusCodes.SUCCESS);
-        res.json(music_list);
+      const musicas = await this.service.listarTodasOrdenadas();
+      res.status(statusCodes.SUCCESS).json(musicas);
     } catch (error) {
-        next(error);
+      console.error('Erro ao listar músicas:', error);
+      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+        mensagem: 'Erro ao buscar músicas'
+      });
     }
-});
+  }
 
-// Retoma a música a partir de seu ID
-router.get('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+  // Busca uma música específica por ID
+  async buscarPorId(req: Request, res: Response) {
     try {
-        const music = await serviceMusica.listarMusicaID(req.params.id);
-        res.status(statusCodes.SUCCESS);
-        res.json(music);
+      const musica = await this.service.buscarPorId(req.params.id);
+      if (!musica) return res.status(statusCodes.NOT_FOUND).json({ mensagem: 'Música não encontrada' });
+      res.status(statusCodes.SUCCESS).json(musica);
     } catch (error) {
-        next(error);
+      console.error('Erro ao buscar música:', error);
+      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+        mensagem: 'Erro ao buscar música'
+      });
     }
-});
+  }
 
-// Deleta a música a partir de seu id
-router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+  // Marca música como ouvida pelo usuário
+  async marcarComoOuvida(req: Request, res: Response) {
     try {
-        const music = await serviceMusica.deletarMusica(req.params.id);
-        res.status(statusCodes.SUCCESS);
-        res.json(music);
+      // @ts-ignore
+      await this.service.marcarComoOuvida(req.user.id, req.params.musicaId);
+      res.status(statusCodes.SUCCESS).json({ mensagem: 'Música adicionada ao histórico' });
     } catch (error) {
-        next(error);
+      console.error('Erro ao marcar música:', error);
+      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+        mensagem: 'Erro ao marcar música'
+      });
     }
-});
+  }
 
-// Atualiza uma música a partir de seu id
-router.put('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+  // Cria nova música (apenas admin)
+  async criarMusica(req: Request, res: Response) {
     try {
-        const music_info: Prisma.MusicaUpdateInput = {
-            nome: req.body.nome,
-            album: req.body.album,
-            genero: req.body.genero,
-        };
-        const music = await serviceMusica.atualizaMusica(req.params.id, music_info);
-        res.status(statusCodes.SUCCESS);
-        res.json(music);
+      const novaMusica = await this.service.criarMusica(req.body);
+      res.status(statusCodes.CREATED).json({
+        mensagem: 'Música criada',
+        dados: novaMusica
+      });
     } catch (error) {
-        next(error);
+      console.error('Erro ao criar música:', error);
+      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+        mensagem: 'Erro ao criar música'
+      });
     }
-});
+  }
 
-// Adiciona uma nova música
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+  // Lista músicas ouvidas pelo usuário
+  async listarOuvidas(req: Request, res: Response) {
     try {
-        const user_info: Prisma.MusicaCreateInput = {
-            nome: req.body.nome,
-            album: req.body.album,
-            genero: req.body.genero,
-        };
-        const music = await serviceMusica.criarMusica(user_info);
-        res.status(statusCodes.CREATED);
-        res.json(music);
+      // @ts-ignore
+      const musicas = await this.service.listarOuvidasPorUsuario(req.user.id);
+      res.status(statusCodes.SUCCESS).json(musicas);
     } catch (error) {
-        next(error);
+      console.error('Erro ao listar histórico:', error);
+      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+        mensagem: 'Erro ao carregar histórico'
+      });
     }
-});
+  }
 
-//Vincula um artista à uma música
-router.post('/autoria', async (req: Request, res: Response, next: NextFunction) => {
+  // Atualiza música (apenas admin)
+  async atualizarMusica(req: Request, res: Response) {
     try {
-        const vinculo = await serviceMusica.vinculaMusicaArtista(req.body.artista, req.body.musica);
-        res.status(statusCodes.CREATED);
-        res.json(vinculo);
+      const musicaAtualizada = await this.service.atualizarMusica(req.params.id, req.body);
+      res.status(statusCodes.SUCCESS).json(musicaAtualizada);
     } catch (error) {
-        next(error);
+      console.error('Erro ao atualizar música:', error);
+      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+        mensagem: 'Erro ao atualizar música'
+      });
     }
-});
+  }
 
-//Desvincula um artista de uma música
-router.delete('/autoria', async (req: Request, res: Response, next: NextFunction) => {
+  // Remove música (apenas admin)
+  async removerMusica(req: Request, res: Response) {
     try {
-        const vinculo_info: Prisma.AutoriaWhereUniqueInput = {
-            artistaId_musicaId: {
-                artistaId: req.body.artista,
-                musicaId: req.body.musica,
-            },
-        };
-        const vinculo = await serviceMusica.desvinculaMusicaArtista(vinculo_info);
-        res.status(statusCodes.SUCCESS);
-        res.json(vinculo);
+      await this.service.removerMusica(req.params.id);
+      res.status(statusCodes.NO_CONTENT).send();
     } catch (error) {
-        next(error);
+      console.error('Erro ao remover música:', error);
+      res.status(statusCodes.INTERNAL_SERVER_ERROR).json({
+        mensagem: 'Erro ao remover música'
+      });
     }
-});
-
-export default router;
+  }
+}
