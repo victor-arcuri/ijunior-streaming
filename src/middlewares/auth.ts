@@ -64,24 +64,28 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function login(req: Request, res: Response, next: NextFunction) {
-    const user = await prisma.usuario.findUnique({
-        where: {
-            email: req.body.email,
-        },
-    });
+    try {
+        const user = await prisma.usuario.findUnique({
+            where: {
+                email: req.body.email,
+            },
+        });
 
-    if (!user) {
-        throw new PermissionError('Email e/ou senha incorretos!');
-    }
-    console.log(req.body.senha, ' ', user.senha);
-    const match = await compare(req.body.senha, user.senha);
+        if (!user) {
+            throw new PermissionError('Email e/ou senha incorretos!');
+        }
+        console.log(req.body.senha, ' ', user.senha);
+        const match = await compare(req.body.senha, user.senha);
 
-    if (!match) {
-        throw new PermissionError('Email e/ou senha incorretos!');
+        if (!match) {
+            throw new PermissionError('Email e/ou senha incorretos!');
+        }
+        generateJWT(user, res);
+        res.status(statusCodes.SUCCESS);
+        res.json('Login realizado com sucesso!');
+    } catch (error) {
+        next(error);
     }
-    generateJWT(user, res);
-    res.status(statusCodes.SUCCESS);
-    res.json('Login realizado com sucesso!');
 }
 
 export function logout(req: Request, res: Response, next: NextFunction) {
