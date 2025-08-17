@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import serviceMusica from '../services/serviceMusica.js';
 import { Prisma } from '@prisma/client';
 import statusCodes from '../../../../utils/constants/statusCodes.js';
+import { validateId } from '../../../middlewares/validateId.js';
 
 const router = Router();
 
@@ -17,7 +18,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Retoma a música a partir de seu ID
-router.get('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/id/:id', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const music = await serviceMusica.listarMusicaID(req.params.id);
         res.status(statusCodes.SUCCESS);
@@ -28,7 +29,7 @@ router.get('/id/:id', async (req: Request, res: Response, next: NextFunction) =>
 });
 
 // Deleta a música a partir de seu id
-router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/id/:id', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const music = await serviceMusica.deletarMusica(req.params.id);
         res.status(statusCodes.SUCCESS);
@@ -39,7 +40,7 @@ router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction)
 });
 
 // Atualiza uma música a partir de seu id
-router.put('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.put('/id/:id', validateId, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const music_info: Prisma.MusicaUpdateInput = {
             nome: req.body.nome,
