@@ -1,5 +1,6 @@
 {
   "name": "ijunior-streaming",
+  "type": "module",
   "version": "1.0.0",
   "description": "A atividade consiste na modelagem de um banco de dados que simule um serviço de streaming de músicas, e na criação de uma API no modelo MVC para consultar o banco, permitindo realização das operações CRUD sobre suas entidades.",
   "main": "index.js",
@@ -14,7 +15,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/victor-arcuri/ijunior-semana5/issues"
   },
@@ -22,9 +22,11 @@
   "devDependencies": {
     "@faker-js/faker": "9.9.0",
     "@types/bcrypt": "6.0.0",
+    "@types/cookie-parser": "1.4.9",
     "@types/cors": "2.8.19",
     "@types/dotenv": "6.1.1",
     "@types/express": "5.0.3",
+    "@types/jsonwebtoken": "9.0.10",
     "@types/node": "24.1.0",
     "eslint": "9.32.0",
     "eslint-config-prettier": "10.1.8",
@@ -38,9 +40,12 @@
   "dependencies": {
     "@prisma/client": "6.13.0",
     "bcrypt": "6.0.0",
+    "cookie-parser": "1.4.7",
     "cors": "2.8.5",
     "dotenv": "17.2.1",
     "express": "5.1.0",
-    "prisma": "6.13.0"
+    "jsonwebtoken": "9.0.2",
+    "prisma": "6.13.0",
+    "zod": "4.0.17"
   }
 }
