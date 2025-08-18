@@ -15,6 +15,27 @@ const router = Router();
 router.post('/login', isNotLogged, login);
 router.post('/logout', verifyJWT, logout);
 
+
+// ROTA DE CRIAÇÃO DE USUÁRIO
+router.post(
+    '/create',
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const body: Prisma.UsuarioCreateInput = {
+                email: req.body.email,
+                nome: req.body.nome,
+                foto: req.body.foto,
+                senha: req.body.senha,
+                privilegio: Privilegios.PADRAO,
+            };
+            const user = await serviceUsuario.criarUsuario(body);
+            res.status(statusCodes.CREATED).json(user);
+        } catch (err) {
+            next(err);
+        }
+    }
+);
+
 /**
  * ROTAS "ACCOUNT" (usuário logado mexe apenas na própria conta)
  * /users/account...
@@ -73,12 +94,13 @@ router.delete(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const userId = req.usuario.id;
-            const deleted = await serviceUsuario.deletarUsuario(userId);
-            res.status(statusCodes.SUCCESS).json(deleted);
+            await serviceUsuario.deletarUsuario(userId);
+            next()
         } catch (err) {
             next(err);
         }
-    }
+    },
+    logout
 );
 
 /**
@@ -273,11 +295,15 @@ router.delete(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const user = await serviceUsuario.deletarUsuario(req.params.id);
+            if (req.usuario.id != req.params.id) {
             res.status(statusCodes.SUCCESS).json(user);
+            }
+            next()
         } catch (err) {
             next(err);
         }
-    }
+    }, 
+    logout
 );
 
 export default router;
