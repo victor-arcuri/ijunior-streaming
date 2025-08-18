@@ -7,7 +7,7 @@ const controller = new MusicController();
 // Rotas públicas
 router.get('/', controller.listarTodas);
 router.get('/:id', controller.buscarPorId);
-router.get('/artist/:id', controller.listarArtistas);
+router.get('/artists/:id', controller.listarArtistas);
 
 // Rotas admin
 router.post('/create', ...controller.criar);
