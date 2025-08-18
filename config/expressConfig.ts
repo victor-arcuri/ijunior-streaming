@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import routerUsuario from '../src/domains/Usuario/controllers/controllerUsuario.js';
 import routerArtista from '../src/domains/Artista/controllers/controllerArtista.js';
-import routerMusica from '../src/domains/Musica/controllers/controllerMusica.js';
+import routerMusica from '../src/domains/Musica/routes/musicaRoutes.js';
 import { errorHandler } from '../src/middlewares/errorHandler.js';
 
 dotenv.config();
@@ -24,8 +24,8 @@ app.use(
         extended: true,
     }),
 );
-app.use('/api/usuarios', routerUsuario);
-app.use('/api/artistas', routerArtista);
-app.use('/api/musicas', routerMusica);
+app.use('/api/users', routerUsuario);
+app.use('/api/artists', routerArtista);
+app.use('/api/musics', routerMusica);
 
 app.use(errorHandler);

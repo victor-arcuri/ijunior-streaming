@@ -1,5 +1,6 @@
 {
   "name": "ijunior-streaming",
+  "type": "module",
   "version": "1.0.0",
   "description": "A atividade consiste na modelagem de um banco de dados que simule um serviço de streaming de músicas, e na criação de uma API no modelo MVC para consultar o banco, permitindo realização das operações CRUD sobre suas entidades.",
   "main": "index.js",
@@ -14,7 +15,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
   "bugs": {
     "url": "https://github.com/victor-arcuri/ijunior-semana5/issues"
   },
