@@ -72,7 +72,7 @@ class ServiceMusica {
             },
         });
         if (!musica) {
-            throw new TokenError('UUID v4 inválido')
+            throw new TokenError('UUID v4 inválido');
         }
         return musica;
     }

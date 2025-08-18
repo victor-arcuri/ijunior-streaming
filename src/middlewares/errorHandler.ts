@@ -39,7 +39,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     }
 
     if (err instanceof SyntaxError) {
-        return res.status(400).json({ error: 'Json inválido' })
+        return res.status(400).json({ error: 'Json inválido' });
     }
 
     res.status(501).json({ error: 'Internal Server Error' });

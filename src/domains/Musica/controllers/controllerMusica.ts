@@ -13,7 +13,6 @@ export default class MusicController {
         return [verifyJWT, checkRole(roles)];
     }
 
-
     // Lista todas músicas (ordem A-Z)
     listarTodas = [
         ...this.verifyAccess(['ADMIN', 'PADRAO']),
@@ -22,10 +21,10 @@ export default class MusicController {
                 const musicas = await this.service.listarMusicas();
                 res.status(statusCodes.SUCCESS).json(musicas);
             } catch (error) {
-            next(error);
+                next(error);
             }
-        }
-    ]
+        },
+    ];
 
     // Lista todos os artistas
     listarArtistas = [
@@ -36,10 +35,10 @@ export default class MusicController {
                 const artistas = musica.autoria;
                 res.status(statusCodes.SUCCESS).json(artistas);
             } catch (error) {
-            next(error);
+                next(error);
             }
-        }
-    ]
+        },
+    ];
 
     // Busca música específica
     buscarPorId = [
@@ -48,18 +47,17 @@ export default class MusicController {
         async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const musica = await this.service.listarMusicaID(req.params.id);
-                if (musica){
-                    res.status(statusCodes.SUCCESS).json(musica)
-                }
-                else {
+                if (musica) {
+                    res.status(statusCodes.SUCCESS).json(musica);
+                } else {
                     res.status(statusCodes.NOT_FOUND).json({ error: 'Música não encontrada' });
                 }
             } catch (error) {
                 next(error);
             }
-        }
-    ]
-    
+        },
+    ];
+
     // Cria nova música (admin)
     criar = [
         ...this.verifyAccess(['ADMIN']),
@@ -70,8 +68,8 @@ export default class MusicController {
             } catch (error) {
                 next(error);
             }
-        }
-    ]
+        },
+    ];
 
     // Atualiza música (admin)
     atualizar = [
@@ -84,8 +82,8 @@ export default class MusicController {
             } catch (error) {
                 next(error);
             }
-        }
-    ]
+        },
+    ];
 
     // Remove música (admin)
     remover = [
@@ -98,6 +96,6 @@ export default class MusicController {
             } catch (error) {
                 next(error);
             }
-        }
-    ]
+        },
+    ];
 }

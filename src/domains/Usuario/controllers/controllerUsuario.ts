@@ -15,45 +15,38 @@ const router = Router();
 router.post('/login', isNotLogged, login);
 router.post('/logout', verifyJWT, logout);
 
-
 // ROTA DE CRIAÇÃO DE USUÁRIO
-router.post(
-    '/create',
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const body: Prisma.UsuarioCreateInput = {
-                email: req.body.email,
-                nome: req.body.nome,
-                foto: req.body.foto,
-                senha: req.body.senha,
-                privilegio: Privilegios.PADRAO,
-            };
-            const user = await serviceUsuario.criarUsuario(body);
-            res.status(statusCodes.CREATED).json(user);
-        } catch (err) {
-            next(err);
-        }
+router.post('/create', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const body: Prisma.UsuarioCreateInput = {
+            email: req.body.email,
+            nome: req.body.nome,
+            foto: req.body.foto,
+            senha: req.body.senha,
+            privilegio: Privilegios.PADRAO,
+        };
+        const user = await serviceUsuario.criarUsuario(body);
+        res.status(statusCodes.CREATED).json(user);
+    } catch (err) {
+        next(err);
     }
-);
+});
 
 /**
  * ROTAS "ACCOUNT" (usuário logado mexe apenas na própria conta)
  * /users/account...
  */
-router.get(
-    '/account',
-    verifyJWT,
-    async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const userId = req.usuario.id;
-            const user = await serviceUsuario.listarUsuarioID(userId);
-            if (!user) return res.status(statusCodes.NOT_FOUND).json({ message: 'Usuário não encontrado' });
-            res.status(statusCodes.SUCCESS).json(user);
-        } catch (err) {
-            next(err);
-        }
+router.get('/account', verifyJWT, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.usuario.id;
+        const user = await serviceUsuario.listarUsuarioID(userId);
+        if (!user)
+            return res.status(statusCodes.NOT_FOUND).json({ message: 'Usuário não encontrado' });
+        res.status(statusCodes.SUCCESS).json(user);
+    } catch (err) {
+        next(err);
     }
-);
+});
 
 router.put(
     '/account/update',
@@ -71,7 +64,7 @@ router.put(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 router.put(
@@ -85,7 +78,7 @@ router.put(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 router.delete(
@@ -95,12 +88,12 @@ router.delete(
         try {
             const userId = req.usuario.id;
             await serviceUsuario.deletarUsuario(userId);
-            next()
+            next();
         } catch (err) {
             next(err);
         }
     },
-    logout
+    logout,
 );
 
 /**
@@ -121,7 +114,7 @@ router.post(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 router.delete(
@@ -135,7 +128,7 @@ router.delete(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 router.get(
@@ -149,7 +142,7 @@ router.get(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 /**
@@ -168,7 +161,7 @@ router.post(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 router.delete(
@@ -184,7 +177,7 @@ router.delete(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 router.get(
@@ -198,7 +191,7 @@ router.get(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 /**
@@ -215,7 +208,8 @@ router.get(
             const email = req.query.email as string | undefined;
             const limit = req.query.limit ? Number(req.query.limit) : undefined;
             const sort = (req.query.sort as string | undefined)?.toLowerCase();
-            const order: 'asc' | 'desc' | undefined = sort === 'asc' || sort === 'desc' ? sort : undefined;
+            const order: 'asc' | 'desc' | undefined =
+                sort === 'asc' || sort === 'desc' ? sort : undefined;
 
             const result = email
                 ? await serviceUsuario.listarUsuarioEmail(email)
@@ -225,7 +219,7 @@ router.get(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 router.get(
@@ -236,12 +230,15 @@ router.get(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const user = await serviceUsuario.listarUsuarioID(req.params.id);
-            if (!user) return res.status(statusCodes.NOT_FOUND).json({ message: 'Usuário não encontrado' });
+            if (!user)
+                return res
+                    .status(statusCodes.NOT_FOUND)
+                    .json({ message: 'Usuário não encontrado' });
             res.status(statusCodes.SUCCESS).json(user);
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 router.post(
@@ -262,7 +259,7 @@ router.post(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 router.put(
@@ -284,7 +281,7 @@ router.put(
         } catch (err) {
             next(err);
         }
-    }
+    },
 );
 
 router.delete(
@@ -296,14 +293,14 @@ router.delete(
         try {
             const user = await serviceUsuario.deletarUsuario(req.params.id);
             if (req.usuario.id != req.params.id) {
-            res.status(statusCodes.SUCCESS).json(user);
+                res.status(statusCodes.SUCCESS).json(user);
             }
-            next()
+            next();
         } catch (err) {
             next(err);
         }
-    }, 
-    logout
+    },
+    logout,
 );
 
 export default router;
