@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import serviceMusica from '../services/serviceMusica.js';
 import statusCodes from '../../../../utils/constants/statusCodes.js';
+import { validateId } from '../../../middlewares/validateId.js';
 import { verifyJWT, checkRole } from '../../../middlewares/auth.js';
 import { Privilegios } from '@prisma/client';
 
@@ -43,6 +44,7 @@ export default class MusicController {
     // Busca música específica
     buscarPorId = [
         ...this.verifyAccess(['ADMIN', 'PADRAO']),
+        validateId,
         async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const musica = await this.service.listarMusicaID(req.params.id);
@@ -74,6 +76,7 @@ export default class MusicController {
     // Atualiza música (admin)
     atualizar = [
         ...this.verifyAccess(['ADMIN']),
+        validateId,
         async (req: Request, res: Response, next: NextFunction) => {
             try {
                 const musica = await this.service.atualizaMusica(req.params.id, req.body);
@@ -87,6 +90,7 @@ export default class MusicController {
     // Remove música (admin)
     remover = [
         ...this.verifyAccess(['ADMIN']),
+        validateId,
         async (req: Request, res: Response, next: NextFunction) => {
             try {
                 await this.service.deletarMusica(req.params.id);
