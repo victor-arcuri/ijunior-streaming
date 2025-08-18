@@ -3,7 +3,7 @@ import serviceUsuario from '../services/serviceUsuario.js';
 import { Prisma, Privilegios } from '@prisma/client';
 import statusCodes from '../../../../utils/constants/statusCodes.js';
 import { validateId } from '../../../middlewares/validateId.js';
-import { verifyJWT, checkRole, isNotLogged, login, logout } from '../../../middlewares/auth';
+import { verifyJWT, checkRole, isNotLogged, login, logout } from '../../../middlewares/auth.js';
 
 const router = Router();
 
