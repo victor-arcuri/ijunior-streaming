@@ -1,0 +1,16 @@
+/node_modules/
+
+/prisma/dev.db
+
+/dist/*
+
+eslint.config.mjs
+.prettierrc
+.gitignore
+README.md
+.env
+
+# entrypoint.sh
+docker-compose.yml
+Dockerfile
+.dockerignore
