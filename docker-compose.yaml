@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: streaming-db
+    restart: always
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    networks:
+      - ijunior_network
+
+  api:
+    depends_on:
+      mysql:
+        condition: service_started
+    build:
+      context: ./
+      dockerfile: api.dockerfile
+    container_name: streaming-api
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - ./:/app
+    command: npx prisma migrate dev && npm start
+    networks:
+      - ijunior_network
+
+networks:
+  ijunior_network:
+    driver: bridge       
+
+volumes:
+  mysqldata:
