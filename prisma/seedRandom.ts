@@ -178,6 +178,8 @@ async function main() {
     await seedAutorias(artistas, musicas);
     await seedLogs(usuarios, musicas);
     await seedSalvas(usuarios, musicas);
+
+    await prisma.$disconnect();
 }
 
 main();

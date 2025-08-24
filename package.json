@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx tsc --watch & npx nodemon dist/index.js",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "seedAdmin": "node dist/prisma/seedAdmin.js"
   },
   "repository": {
     "type": "git",

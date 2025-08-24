@@ -9,4 +9,6 @@ done
 
 npx prisma migrate deploy
 
+npm run seedAdmin
+
 exec node dist/index.js
