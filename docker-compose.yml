@@ -4,10 +4,10 @@ services:
     container_name: ${NAME_CONTAINER_DB}
     image: ${IMAGE_BD}
     environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "${LOCAL_PORT_DB}:${PORT_DB}"
     volumes:
@@ -21,12 +21,14 @@ services:
     depends_on:
       - mysql-server
     environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - PORT_API=${PORT_API}
-      - APP_URL=${APP_URL}
-      - SECRET_KEY=${SECRET_KEY}
-      - JWT_EXPIRATION=${JWT_EXPIRATION}
-      - NODE_ENV=${NODE_ENV}
+      DATABASE_URL: ${DATABASE_URL}
+      PORT_API: ${PORT_API}
+      APP_URL: ${APP_URL}
+      SECRET_KEY: ${SECRET_KEY}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      NODE_ENV: ${NODE_ENV}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_SENHA: ${ADMIN_SENHA}
 
 volumes:
   my_db:
