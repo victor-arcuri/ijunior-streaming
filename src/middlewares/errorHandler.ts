@@ -5,6 +5,7 @@ import { TokenError } from '../../errors/TokenError.js';
 import statusCodes from '../../utils/constants/statusCodes.js';
 import { LoginError } from '../../errors/LoginError.js';
 import { PermissionError } from '../../errors/PermissionError.js';
+import { JsonWebTokenError } from 'jsonwebtoken';
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     console.error(err);
@@ -40,6 +41,10 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
     if (err instanceof SyntaxError) {
         return res.status(400).json({ error: 'Json inválido' });
+    }
+
+    if (err instanceof JsonWebTokenError) {
+        return res.status(400).json({ error: 'JWT inválido' });
     }
 
     res.status(501).json({ error: 'Internal Server Error' });

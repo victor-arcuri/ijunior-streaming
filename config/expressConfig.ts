@@ -1,13 +1,10 @@
 import express, { Express } from 'express';
 import cors, { CorsOptions } from 'cors';
-import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import routerUsuario from '../src/domains/Usuario/controllers/controllerUsuario.js';
 import routerArtista from '../src/domains/Artista/controllers/controllerArtista.js';
 import routerMusica from '../src/domains/Musica/routes/musicaRoutes.js';
 import { errorHandler } from '../src/middlewares/errorHandler.js';
-
-dotenv.config();
 
 export const app: Express = express();
 
