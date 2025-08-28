@@ -5,9 +5,9 @@
   "description": "A atividade consiste na modelagem de um banco de dados que simule um serviço de streaming de músicas, e na criação de uma API no modelo MVC para consultar o banco, permitindo realização das operações CRUD sobre suas entidades.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx jest --verbose",
     "dev": "npx tsc --watch & npx nodemon dist/index.js",
-    "build": "tsc",
+    "build": "npx tsc",
     "start": "node dist/index.js",
     "seedAdmin": "node dist/prisma/seedAdmin.js"
   },
