@@ -144,3 +144,4 @@ vite.config.ts.timestamp-*
 
 /dist/*
 !/build/.gitkeep
+!.env.template
