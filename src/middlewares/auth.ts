@@ -7,6 +7,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import { Privilegios } from '@prisma/client';
 
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { LoginError } from '../../errors/LoginError.js';
 import { TokenError } from '../../errors/TokenError.js';
 import { PermissionError } from '../../errors/PermissionError.js';
@@ -101,4 +102,51 @@ export function checkRole(roles: Privilegios[]) {
         }
         next();
     };
+}
+
+export async function verifyRefreshToken(req: Request, res: Response, next: NextFunction) {
+    try {
+        const [idUsuario, hash] = cookieExtractor(req);
+
+        const token = await prisma.refreshToken.findUnique({
+            where: { tokenHash: hash, idUsuario: { id: idUsuario } },
+        });
+        if (!token) {
+            throw new TokenError('Refresh token inválido');
+        }
+        next();
+    } catch (err) {
+        next(err);
+    }
+}
+
+export async function createRefresh(res: Response, next: NextFunction, idUsuario: string) {
+    try {
+        const hash = crypto.randomBytes(15).toString('hex');
+        if (!hash) {
+            throw new TokenError('Erro ao criar refresh token');
+        }
+        const sixMonthsFromNow = new Date();
+        sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
+        const token = await prisma.refreshToken.create({
+            data: {
+                tokenHash: hash,
+                idUsuario: {
+                    connect: {
+                        id: idUsuario,
+                    },
+                },
+                expiraEm: sixMonthsFromNow,
+            },
+        });
+        if (!token) {
+            throw new TokenError('Erro ao criar refresh token');
+        }
+        res.cookie('refresh', Buffer.from(idUsuario + '.' + hash).toString('base64'), {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'development',
+        });
+    } catch (err) {
+        next(err);
+    }
 }
