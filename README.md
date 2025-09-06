@@ -31,6 +31,9 @@ O banco de dados retrata três entidades principais e suas relações:
 
 ![Diagrama representando as relações das tabelas do banco de dados](/public/imgs/db_schema.png)
 
+### Autenticação
+Padrão refresh-token
+
 ### Entidades
 
 #### Usuário
