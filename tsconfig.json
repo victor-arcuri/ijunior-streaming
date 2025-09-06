@@ -111,5 +111,5 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": ["config", "index.ts", "src", "test", "@types/*.d.ts", "errors", "prisma"],
-  "exclude": ["node_modules", "dist", "*.teste.js"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

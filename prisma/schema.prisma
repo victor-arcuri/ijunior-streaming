@@ -16,14 +16,15 @@ enum Privilegios {
 }
 
 model Usuario {
-  id          String        @id @default(uuid())
-  email       String        @unique
-  nome        String
-  privilegio  Privilegios   @default(PADRAO)
-  senha       String
-  foto        String?
-  logMusica   LogMusica[]
-  musicaSalva MusicaSalva[]
+  id           String         @id @default(uuid())
+  email        String         @unique
+  nome         String
+  privilegio   Privilegios    @default(PADRAO)
+  senha        String
+  foto         String?
+  logMusica    LogMusica[]
+  musicaSalva  MusicaSalva[]
+  RefreshToken RefreshToken[]
 }
 
 model Artista {
@@ -56,9 +57,9 @@ model Autoria {
 model LogMusica {
   id        String   @id @default(uuid())
   tempo     DateTime @default(now())
-  usuario   Usuario?  @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+  usuario   Usuario? @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
   usuarioId String?
-  musica    Musica?   @relation(fields: [musicaId], references: [id], onDelete: SetNull)
+  musica    Musica?  @relation(fields: [musicaId], references: [id], onDelete: SetNull)
   musicaId  String?
 }
 
@@ -69,4 +70,12 @@ model MusicaSalva {
   musicaId  String
 
   @@id([usuarioId, musicaId])
+}
+
+model RefreshToken {
+  tokenHash String   @id
+  idUsuario Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  criadaEm  DateTime @default(now())
+  expiraEm  DateTime
+  usuarioId String
 }

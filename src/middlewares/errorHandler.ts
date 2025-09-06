@@ -5,7 +5,9 @@ import { TokenError } from '../../errors/TokenError.js';
 import statusCodes from '../../utils/constants/statusCodes.js';
 import { LoginError } from '../../errors/LoginError.js';
 import { PermissionError } from '../../errors/PermissionError.js';
-import { JsonWebTokenError } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
+
+const { JsonWebTokenError } = jwt;
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     console.error(err);

@@ -3,7 +3,15 @@ import serviceUsuario from '../services/serviceUsuario.js';
 import { Prisma, Privilegios } from '@prisma/client';
 import statusCodes from '../../../../utils/constants/statusCodes.js';
 import { validateId } from '../../../middlewares/validateId.js';
-import { verifyJWT, checkRole, isNotLogged, login, logout } from '../../../middlewares/auth.js';
+import {
+    verifyJWT,
+    checkRole,
+    isNotLogged,
+    login,
+    logout,
+    verifyRefreshToken,
+    generateJWT,
+} from '../../../middlewares/auth.js';
 
 const router = Router();
 
@@ -301,6 +309,20 @@ router.delete(
         }
     },
     logout,
+);
+
+router.get(
+    '/refresh/:id',
+    verifyRefreshToken,
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const user = await serviceUsuario.listarUsuarioID(req.params.id);
+            const token = generateJWT(user);
+            res.status(statusCodes.SUCCESS).json({ jwtToken: token });
+        } catch (err) {
+            next(err);
+        }
+    },
 );
 
 export default router;
