@@ -15,19 +15,13 @@ import { PermissionError } from '../../errors/PermissionError.js';
 const { sign, verify } = jwt;
 
 export function isNotLogged(req: Request, res: Response, next: NextFunction) {
-    const token = cookieExtractor(req);
-    if (token) {
-        const decoded = verify(token, process.env.SECRET_KEY || '') as JwtPayload;
-        req.usuario = decoded.usuario;
-    }
-
-    if (req.usuario != null) {
+    if (req.usuario != null && !req.cookies['refresh']) {
         throw new LoginError('Usuário já está logado!');
     }
     next();
 }
 
-function generateJWT(user: Usuario, res: Response) {
+export function generateJWT(user: Omit<Usuario, 'senha'>) {
     const body = {
         id: user.id,
         email: user.email,
@@ -37,22 +31,22 @@ function generateJWT(user: Usuario, res: Response) {
     const token = sign({ usuario: body }, process.env.SECRET_KEY || '', {
         expiresIn: Number(process.env.JWT_EXPIRATION),
     });
-    res.cookie('jwt', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== 'development',
-    });
-}
-
-function cookieExtractor(req: Request) {
-    let token = null;
-    if (req.cookies) {
-        token = req.cookies['jwt'];
-    }
     return token;
 }
 
+function cookieExtractor(req: Request) {
+    if (!req.cookies['refresh']) {
+        throw new TokenError('Refresh token vazio');
+    }
+    const decoded = Buffer.from(req.cookies['refresh'], 'base64').toString('utf8');
+    return decoded.split('.');
+}
+
 export function verifyJWT(req: Request, res: Response, next: NextFunction) {
-    const token = cookieExtractor(req);
+    if (!req.headers.authorization) {
+        throw new TokenError('Authorization no cabeçalho vazio');
+    }
+    const token = req.headers.authorization.split(' ')[1];
     if (token) {
         const decoded = verify(token, process.env.SECRET_KEY || '') as JwtPayload;
         req.usuario = decoded.usuario;
@@ -75,24 +69,32 @@ export async function login(req: Request, res: Response, next: NextFunction) {
         if (!user) {
             throw new PermissionError('Email e/ou senha incorretos!');
         }
-        console.log(req.body.senha, ' ', user.senha);
+        // console.log(req.body.senha, ' ', user.senha);
         const match = await compare(req.body.senha, user.senha);
 
         if (!match) {
             throw new PermissionError('Email e/ou senha incorretos!');
         }
-        generateJWT(user, res);
+        const jwtToken = generateJWT(user);
+        await createRefresh(res, next, user.id);
         res.status(statusCodes.SUCCESS);
-        res.json('Login realizado com sucesso!');
+        res.json({ accessToken: jwtToken });
     } catch (error) {
         next(error);
     }
 }
 
-export function logout(req: Request, res: Response, next: NextFunction) {
-    res.clearCookie('jwt');
-    res.status(statusCodes.SUCCESS).json('Logout realizado com sucesso!');
-    next();
+export async function logout(req: Request, res: Response, next: NextFunction) {
+    try {
+        const [idUsuario, hash] = cookieExtractor(req);
+        res.clearCookie('refresh');
+        await prisma.refreshToken.delete({
+            where: { tokenHash: hash, idUsuario: { id: idUsuario } },
+        });
+        res.status(statusCodes.SUCCESS).json('Logout realizado com sucesso!');
+    } catch (err) {
+        next(err);
+    }
 }
 
 export function checkRole(roles: Privilegios[]) {
