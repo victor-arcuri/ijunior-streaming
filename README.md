@@ -17,6 +17,13 @@ docker compose up
 ```
 Com isso, a API está incializada na porta definida e rodando!
 
+### Autenticação
+A API segue o padrão de autenticação refresh-token, com o session token ficando inválido em algum tempo, e o cookie de validação do usuário permanecendo por mais tempo registrado. Caso o session token fique inválido durante o uso, basta dar refresh com:
+
+```
+(GET) /api/users/refresh/:id
+```
+
 ## Documentação da API e Testes de Endpoint
 > A documentação listando todos os endpoints da API e formatos dos objetos requeridos em requisições pode ser encontrada [aqui](https://documenter.getpostman.com/view/47365760/2sB3BDLX3H)
 
@@ -30,9 +37,6 @@ Com isso, a API está incializada na porta definida e rodando!
 O banco de dados retrata três entidades principais e suas relações:
 
 ![Diagrama representando as relações das tabelas do banco de dados](/public/imgs/db_schema.png)
-
-### Autenticação
-Padrão refresh-token
 
 ### Entidades
 
